@@ -76,7 +76,7 @@ ExtractLoadings <- function (x, loadings=0.3) {
 ##' .. content for \description{} (no empty lines) ..
 ##' Takes a psych fa object, and extracts the communalities and uniquenesses
 ##' .. content for \details{} ..
-##' @title
+##' @title Extracth2u2
 ##' @param x a psych fa object
 ##' @return a data frame containing uniquenesses and communalities
 ##' @author Richard Morrisroe
@@ -111,7 +111,7 @@ FitIndices <- function (x, labels=NULL) {
 ##' Performs a SVD based CV metric used in chemometrics. 
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title Svdcv
 ##' @param x 
 ##' @param ... 
 ##' @return an xtable object containing the SVD rank, prediction error and SD of prediction error
@@ -130,12 +130,12 @@ Svdcv <- function(x, ...) {
 ##'
 ##' 
 ##' .. content for \details{} ..
-##' @title 
+##' @title apademotables
 ##' @param data a dataframe containing all numeric variables
 ##' @param FUN function to use (currently not implemented
 ##' @param xtable Boolean. Return an xtable formatted object or not
 ##' @param ... 
-##' @return 
+##' @return a dataframe containing the summary statistics
 ##' @author Richie Morrisroe
 apademotables <- function(data, FUN=mean, xtable=FALSE, ...) {
     fun <- match.call(FUN)
@@ -186,7 +186,7 @@ FactorAverage <- function (sols=list(), mynames=NULL, FUN=mean, ....) {
 ##' .. content for \description{Give meaningful names to a fa solution} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title FactorNames
 ##' @param fac a psych fa object
 ##' @param names a character vector of names to give to each factor (in order)
 ##' @return a psych fa object with the names applied to the coefficient matrix

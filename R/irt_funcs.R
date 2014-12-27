@@ -1,7 +1,7 @@
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title
+##' @title IrtXtab
 ##' @param x an IRT model object of <some_bunch> of classes
 ##' @param ... arguments based to xtable function
 ##' @return an xtable representation of the difficulty and/or discrimination parameters
@@ -93,7 +93,7 @@ getIrtPreds <- function (x) {
 ##' .. compare Z-scores for two IRT models
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title compareIRTscores
 ##' @param x an IRT model
 ##' @param y an IRT model
 ##' @return a list containing the (Pearson) correlations between the two z-scores, and the squared differences between the two sets of scores
@@ -115,7 +115,7 @@ compareIRTscores <- function (x, y) {
 ##' @param constraint the constraint to use - see documentation for grm and gpcm objects
 ##' @param splits  the number of splits to use
 ##' @param .... 
-##' @return 
+##' @return a test and train set
 ##' @author Richie Morrisroe
 IRTcv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasch", "1PL", "gpcm"), splits=10, ....) {
   if(is.dataframe(data) ||is.matrix(data))
@@ -131,7 +131,7 @@ IRTcv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasc
 ##' .. content for \details{} ..
 ##' @title IrtCV
 ##' @param x 
-##' @return 
+##' @return a dataframe containing observed and expected scores
 ##' @author Richie Morrisroe
 IrtCV <- function(x) {
 
@@ -170,10 +170,10 @@ res <- list(obsscores=obs, totscores=totscores2, abscores=ab.scores, model=model
 ##' Calculate 
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title probcalc
 ##' @param x 
 ##' @param totscores 
-##' @return 
+##' @return calculated probabilities
 ##' @author Richie Morrisroe
 probcalc <- function(x, totscores) {
     res <- sapply(x, calcprob, totscores)
@@ -181,9 +181,9 @@ probcalc <- function(x, totscores) {
 ##' I really wonder if I can salvage anything from these
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title calcprob
 ##' @param x 
-##' @return 
+##' @return calculated probabilities
 ##' @author Richie Morrisroe
 calcprob <- function (x) {
   x2 <- x[,2]
@@ -233,7 +233,7 @@ calcprob <- function (x) {
 ##' A test to assess the adaquecy of an IRT model
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title CondProbIrt
 ##' @param x an IRT object
 ##' @return Something really cool
 ##' @author Richie Morrisroe
@@ -269,9 +269,9 @@ CondProbIrt <- function(x) {
 ##' .. content for \description{Maybe a repeat of the earlier functions} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title getIRTestimates
 ##' @param fscores 
-##' @return 
+##' @return estimated abilities and their standard errors
 ##' @author Richie Morrisroe
 getIRTestimates <- function(fscores) {
   data <- fscores[["score.dat"]]
@@ -282,7 +282,7 @@ getIRTestimates <- function(fscores) {
 ##' .. content for \description{Actual implemented IRT test on new data function} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title testIRTModels
 ##' @param oldmodel the original IRT model
 ##' @param newdata the new data
 ##' @param gpcmconstraint the constraint if the model is gpcm
@@ -316,7 +316,7 @@ testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "g
 ##' .. content for \description{Extract fit functions from an OpenMx object} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title getMxFitFunctions
 ##' @param mx an mxFit object
 ##' @param label labels to apply to the fit functions returned
 ##' @return a dataframe containing the fit functions
@@ -337,7 +337,7 @@ getMxFitFunctions <- function(mx, label=NULL) {
 ##' .. content for \description{Average a set of IRT Models fit on different cross-validation splits} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title irtAverage
 ##' @param sols IRT Models
 ##' @return a dataframe containing the averaged coefficients
 ##' @author Richie Morrisroe
@@ -350,7 +350,7 @@ irtAverage <- function(sols=list()) {
 ##' .. content for \description{Claims to be a smoothed AIC function, but actually just extracts the AIC value from an MxRAMModel or MxModel} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title smoothAIC
 ##' @param model An MxModel object
 ##' @return the AIC of the object
 ##' @author Richie Morrisroe
@@ -366,7 +366,7 @@ smoothAIC <- function(model) {
 ##' .. content for \description{Calculate the smoothed AIC across a set of models} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title smoothedAIC
 ##' @param models A set of MxModel objects
 ##' @return a vector of weights
 ##' @author Richie Morrisroe
@@ -385,7 +385,7 @@ smoothedAIC <- function (models) {
 ##' .. content for \description{Average a set of IRT Factor Scores across Cross-validation Splits} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title irtAverageFactorScores
 ##' @param scores IRT scores 
 ##' @return the average across all splits
 ##' @author Richie Morrisroe

@@ -77,11 +77,11 @@ combineLoadings <-  function (mfa) {
 ##' .. content for \description{} (no empty lines) ..
 ##' Again, I don't think I actually finished this function
 ##' .. content for \details{} ..
-##' @title
+##' @title displayRot
 ##' @param mfa
 ##' @param method
 ##' @param rotreq
-##' @return
+##' @return results, yo!
 ##' @author Richard Morrisroe
 displayRot <- function (mfa, method=NULL, rotreq=NULL) {
   rotationreq <- rotreq

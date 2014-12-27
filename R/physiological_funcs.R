@@ -20,7 +20,7 @@ fileImport <- function(directory, pattern) {
 ##' @title listToDf
 ##' @param data the datafile
 ##' @param ind 
-##' @return 
+##' @return a dataframe of required data
 ##' @author Richie Morrisroe
 listToDf <- function(data, ind) {
   dnames <- names(data)
@@ -43,7 +43,7 @@ p  }
 ##' .. content for \description{read in files and write them out again} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title lazyload
 ##' @param files the files to read in
 ##' @param names the pattern of files to read
 ##' @param cols in which columns are needed to be wrote out again
@@ -102,7 +102,7 @@ getPPNo <- function(files) {
 ##' .. content for \description{A better implementation of lazylength} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title 
+##' @title lazylength
 ##' @param files a vector of files
 ##' @return a file identifier and the nrow() of each file 
 ##' @author Richie Morrisroe
@@ -225,10 +225,10 @@ interpolate.pain <- function(pain, padding) {
 ##' .. content for \description{Another interpolation function} (no empty lines) ..
 ##' TODO: figure out which one of these is actually used
 ##' .. content for \details{} ..
-##' @title 
+##' @title interpolate2
 ##' @param painscores 
 ##' @param painmetadata 
-##' @return 
+##' @return interpolations
 ##' @author Richie Morrisroe
 interpolate2 <- function(painscores, painmetadata) {
     pain.ratings.min <- with(painmetadata, floor((SqueezStop+60)/60))

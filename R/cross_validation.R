@@ -68,6 +68,8 @@ Trainfolds <- function(data, Form, control, sizes, metric, updown) {
 ##' \description{Yet another split sample function}
 ##'
 ##' .. content for \details{} ..
+##' @name package-thesisR
+##' @docType package
 ##' @title some_other_title
 ##' @param x the data
 ##' @param split the number of splits to make

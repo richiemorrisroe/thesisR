@@ -1,7 +1,7 @@
-##' .. content for \description{Essentially a wrapper around a particular sequence of glmnet function} (no empty lines) ..
+##' .. Essentially a wrapper around a particular sequence of glmnet functions
 ##'
-##' .. content for \details{} ..
-##' @title 
+##' ..
+##' @title penalisedRegression
 ##' @param x a dataframe of all numeric column variables
 ##' @param y the response variable
 ##' @param testdata the new dataset to calculate coefficients on
