@@ -1,0 +1,91 @@
+##' .. content for \description{} (no empty lines) ..
+##' I'm pretty sure I never finished this function
+##' .. content for \details{} ..
+##' @title MultFactorAnalysis
+##' @param data a dataframe with all numeric columns with no non-missing data
+##' @param factors the number (or range) of factors to extract
+##' @param meth a list containing all the methods of extractions to use, or "all" 
+##' @param rotation a list containing all of the rotations to use, or "all" for all available rotations
+##' @param scores Boolean, should factor scores be returned
+##' @return an object of class mfa, containing all of the relevant information
+##' @author Richard Morrisroe
+MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
+  orthrotations <- c("none", "varimax", "quartimax", "bentlerT", "geominT" )
+  obliquerotations <- c("promax", "oblimin",
+          "simplimax", "bentlerQ", "geominQ", "biquartimin")
+  allrot <- c(orthrotations, obliquerotations)
+
+  meth <- c("minres", "wls", "gls", "pa", "ml")
+  Scores <- c("regression", "Thurstone", "Anderson", "Bartlett", "tenBerge")
+  fno <- factors
+  rotlist <- list()
+  for (i in seq_along(along.with=allrot)) {
+   x <- fa(na.omit(data), nfactors=fno, rotate=allrot[i], fm="ml")
+  assign(paste("rot", i,sep=""), value=x)
+
+   rotlist[[i]] <- get(paste("rot", i, sep=""))
+
+}
+  names(rotlist) <- allrot
+  reslist <- rotlist
+
+  fmlist <- list()
+  for (j in seq_along(along.with=meth)) {
+    y <- fa(na.omit(data), nfactors=fno, rotate="oblimin", fm=meth[j])
+    assign(paste("meth", j, sep=""), value=y)
+    fmlist[[j]] <- get(paste("meth", j, sep=""))
+}
+  names(fmlist) <- meth
+  res <- c(factormethods=fmlist, rotations=reslist)
+
+}
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title GetLoadings
+##' @param mfa
+##' @return a list containing the loadings of all mfa solutions in mfa
+##' @author Richard Morrisroe
+getLoadings <- function (mfa) {
+  ind <- lapply(mfa, ExtractLoadings)
+  ind
+}
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title CombineLoadings
+##' @param mfa a multi-factor object
+##' @return a list of mean loadings averaged over all potential factor solutions
+##' @author Richard Morrisroe
+combineLoadings <-  function (mfa) {
+  loadlist <- list()
+  for (i in seq_along(along.with=mfa)) {
+    loadlist[[i]] <- mfa[[i]]$loadings
+
+  }
+  loadlist
+  loadings <- list()
+  for (j in seq_along(along.with=loadlist)) {
+
+
+    loadings[[j]] <- as.matrix(unclass(loadlist[[j]]))
+  }
+  loadings
+
+  meanload <- lapply(loadings, function (x) Reduce('+', x))
+}
+##' .. content for \description{} (no empty lines) ..
+##' Again, I don't think I actually finished this function
+##' .. content for \details{} ..
+##' @title
+##' @param mfa
+##' @param method
+##' @param rotreq
+##' @return
+##' @author Richard Morrisroe
+displayRot <- function (mfa, method=NULL, rotreq=NULL) {
+  rotationreq <- rotreq
+  meth <- method
+  resind <- grep(rotationreq, x=names(mfa))
+  res <- mfa[[resind]]
+}
