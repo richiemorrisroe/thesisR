@@ -129,11 +129,11 @@ IRTcv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasc
 ##' Yet another unsuccessful IRT CV function (look at this one, there were good ideas in there)
 ##'
 ##' .. content for \details{} ..
-##' @title IrtCV
+##' @title irt_cross_validate
 ##' @param x 
 ##' @return a dataframe containing observed and expected scores
 ##' @author Richie Morrisroe
-IrtCV <- function(x) {
+irt_cross_validate<- function(x) {
 
 #get observed frequencies from display command in package ltm
 obs <- descript(x)$perc
