@@ -4,5 +4,7 @@ Version: 0.1
 Authors@R: "Richie Morrisroe <richie.morrisroe@gmail.com> [aut, cre]"
 Description: Mostly psychometric functions
 Depends: R (>= 3.1.2)
+Imports:
+	psych
 License: GPL v3.0+
 LazyData: true
