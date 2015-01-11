@@ -66,7 +66,10 @@ fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
 get_component <- function(fs, component) {
     compq <- component
     fac <- unlist(sapply(fs, `[`, "factors"))
-    compdata <- unlist(sapply(fs, `[`, component))
+    compdata <- sapply(fs, `[`, component)
+    if(length(compdata[[1]])>1) {
+        compdata <- unlist(lapply(compdata, mean, na.rm=TRUE))
+    }
     res <- data.frame(component=compdata, factors=fac)
 }
 extractor <- function (fs, parameter) {
@@ -75,7 +78,9 @@ extractor <- function (fs, parameter) {
 }
     #return a function that extracts the given parameter
 }
-get_chi_square <- extractor(fs=test, parameter="chi")
+chi <- extractor(parameter="chi")
+rms <- extractor(parameter="rms")
+communalities <- extractor(parameter="communality")
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
