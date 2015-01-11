@@ -1,8 +1,8 @@
-##' .. content for \description{Takes an fa object, extracts the coefficients, and returns an xtable object of these coefficients (including communalities)} (no empty lines) ..
+##' \description{Takes an fa object, extracts the coefficients, and returns an xtable object of these coefficients (including communalities)}
 ##'
-##' .. content for \details{} ..
+##' \details{Returns a table suitable for research. (Probably) doesn't meet APA, or indeed any, standards. Thin wrapper around FactorCoeff}
 ##' @title FactorXtab 
-##' @param x
+##' @param x an object of class "psych" "fa"
 ##' @param ...  further arguments passed to the FactorCoeff method
 ##' @return xtable object of coefficients
 ##' @author Richard Morrisroe
@@ -11,9 +11,9 @@ FactorXtab <-  function (x, names=NULL, ...) {
     fact.xtab <- xtable(x.mat.df, ...)
     return(fact.xtab)
 }
-##' .. content for \description{} (no empty lines) ..
-##' This function takes an fa object and extracts the coefficients from it
-##' .. content for \details{} ..
+##' \description{This function takes an fa object and extracts the coefficients from it} 
+##' 
+##'  \details{Extracts the loadings and communalities separately and cbinds them} 
 ##' @title FactorCoeff
 ##' @param x 
 ##' @param names 
@@ -39,12 +39,12 @@ FactorCoeff <- function (x, names=NULL) {
    }
    return(x.mat.df)
 }
-##' .. content for \description{} (no empty lines) ..
-##' Extracts the correlations of factors from an fa object
-##' .. content for \details{} ..
+##' .. content for \description{Extracts the correlations of factors from an fa object}
+##' 
+##' .. content for \details{gets the estimated factor correlations. Only really useful with oblique rotations}
 ##' @title FactorCor
 ##' @param x 
-##' @param ... 
+##' @param ... Further arguments passed to the xtable method
 ##' @return an xtable object containing the between-factor correlations
 ##' @author Richard Morrisroe
 FactorCor <- function (x, ...) {
@@ -74,9 +74,9 @@ ExtractLoadings <- function (x, loadings=0.3) {
 ##   cor <- x$r.scores
 ##  xtable(cor)
 ## }
-##' .. content for \description{} (no empty lines) ..
-##' Takes a psych fa object, and extracts the communalities and uniquenesses
-##' .. content for \details{} ..
+##' \description{Takes a psych fa object, and extracts the communalities and uniquenesses} (no empty lines) ..
+##' 
+##' \details{See description} ..
 ##' @title Extracth2u2
 ##' @param x a psych fa object
 ##' @return a data frame containing uniquenesses and communalities
@@ -88,8 +88,7 @@ Extracth2u2 <- function (x) {
   x.h2u2 <- as.data.frame(cbind(x.comm, x.uniq, x.ratio))
   x.h2u2
  }
-##' .. content for \description{} (no empty lines) ..
-##' Extract TLI (NNFI), BIC and RMSEA from a fa psych object
+##' .. content for \description{Extract TLI (NNFI), BIC and RMSEA from a fa psych object}
 ##' .. content for \details{} ..
 ##' @title FitIndices
 ##' @param x a psych fa object
@@ -109,9 +108,9 @@ FitIndices <- function (x, labels=NULL) {
                      paste(substitute(x),"+90CInt", sep=""))
   res
 }
-##' Performs a SVD based CV metric used in chemometrics. 
+##' \description{Performs a SVD based CV metric used in chemometrics}
 ##'
-##' .. content for \details{} ..
+##' .. content for \details{Find reference for this - need to check external hard drive as no longer have academic access :(} ..
 ##' @title Svdcv
 ##' @param x 
 ##' @param ... 
@@ -127,15 +126,15 @@ Svdcv <- function(x, ...) {
   names(res) <- c("Rank", "Prediction Error", "Prediction Error SE")
   resxtab <- xtable(res, ...)
 }
-##' .. content for \description{Return the mean, SD, min and max of a set of variables stored in a dataframe} (no empty lines) ..
+##' \description{Return the mean, SD, min and max of a set of variables stored in a dataframe}
 ##'
 ##' 
-##' .. content for \details{} ..
+##' .. content for \details{return an APA standard mean, se, min and max table for summary statistics} ..
 ##' @title apademotables
 ##' @param data a dataframe containing all numeric variables
 ##' @param FUN function to use (currently not implemented
 ##' @param xtable Boolean. Return an xtable formatted object or not
-##' @param ... 
+##' @param ... other arguments passed to xtable
 ##' @return a dataframe containing the summary statistics
 ##' @author Richie Morrisroe
 apademotables <- function(data, FUN=mean, xtable=FALSE, ...) {
@@ -149,9 +148,9 @@ apademotables <- function(data, FUN=mean, xtable=FALSE, ...) {
     }
     return(data.tab)
 }
-##' .. content for \description{Return an averaged factor analysis solution over a number of cross-validated splits} (no empty lines) ..
+##' \description{Return an averaged factor analysis solution over a number of cross-validated splits} (no empty lines) ..
 ##'
-##' .. content for \details{} ..
+##' \details{Takes two fa objects, and aggregates them into one set of coefficients. Can be useful either for combining CV selected splits of the correct size, and for bootstrapped FA results} ..
 ##' @title FactorAverage
 ##' @param sols a list of factor solutions to average over
 ##' @param mynames who the hell knows?
@@ -173,20 +172,10 @@ FactorAverage <- function (sols=list(), mynames=NULL, FUN=mean, ....) {
     sols.list <- lapply(sols.coeff.list, as.matrix)
 
     resmat <- apply(simplify2array(sols.list), c(1,2), FUN)
-    ## resmat <- Reduce(`+`, sols.coeff.list)/length(sols.coeff.list)
-    ## dimmat <- dim(sols.coeff.list[[1]])
-    ## resmat <- matrix(0, nrow=dimmat[1], ncol=dimmat[2])
-    ## colnames(resmat) <- names
-    ## for (i in 1:length(sols.coeff.list)) {
-    ##     ## if(i==3)        browser()
-    
-    ##     resmat <- (resmat+sols.coeff.list[[i]])/2
-    ## }
     return(resmat)
 }
-##' .. content for \description{Give meaningful names to a fa solution} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' \description{Give meaningful names to a fa solution}) ..
+##' .. content for \details{As description} ..
 ##' @title FactorNames
 ##' @param fac a psych fa object
 ##' @param names a character vector of names to give to each factor (in order)
