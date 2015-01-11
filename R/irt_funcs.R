@@ -1,6 +1,5 @@
-##' .. content for \description{} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Return an xtable object of an IRT easiness/difficulty parameters} (no empty lines) ..
+##' {Takes a GRM or GPCM object and returns a decidely non-standard table} 
 ##' @title IrtXtab
 ##' @param x an IRT model object of <some_bunch> of classes
 ##' @param ... arguments based to xtable function
@@ -16,9 +15,8 @@ IrtXtab <- function (x, ...) {
   coef.xtab<-xtable(eta.par.mat, ...)
   coef.xtab
 }
-##' .. content for \description{} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Wrapper around ggplot for a person-item difficulty plot}
+##' {Not much, really}
 ##' @title ggplotGRM
 ##' @param grm an IRT GRM model object
 ##' @param ... other methods passed to plotting function
@@ -39,9 +37,8 @@ ggplotGRM <- function (grm, ...) {
   plot2 <- plot1+geom_point()+geom_rug()
   plot2
   }
-##' .. content for \description{} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Convert a GPCM object to a matrix for turning into a table} 
+##' {In some cases, the output of a gpcm will have a different number of threshold parameters for different items. This function extracts the coefficients from an object of class gpcm, and solves this problem so that the coefficients can be coerced to a data.frame or matrix and the tables reported easily}
 ##' @title coef2mat
 ##' @param gpcm a gpcm object (not relevant for GRM)
 ##' @return a matrix containing the estimated parameters from the gpcm model
@@ -81,7 +78,7 @@ coef2mat <- function (gpcm) {
 }
 ##' Extract the predictions from an IRT fascore object
 ##'
-##' .. content for \details{} ..
+##' {Selects useful information from an object inheriting from grm or gpcm}
 ##' @title getIrtPreds
 ##' @param x  an IRT model object
 ##' @return a dataframe containing observed scores, expected scores, the results of a z-test, and the se of the z-test
@@ -90,9 +87,9 @@ getIrtPreds <- function (x) {
   res <- x$score.dat[,c("Obs", "Exp", "z1","se.z1")]
   res
 }
-##' .. compare Z-scores for two IRT models
+##' compare Z-scores for two IRT models
 ##'
-##' .. content for \details{} ..
+##' content for \details{Examine the differences in z-scores between two (and only two) IRT models}
 ##' @title compareIRTscores
 ##' @param x an IRT model
 ##' @param y an IRT model
@@ -108,7 +105,7 @@ compareIRTscores <- function (x, y) {
 }
 ##' .. Unfinished function used to perform cross-validation over IRT models
 ##'
-##' .. content for \details{} ..
+##' {See Description}
 ##' @title IRTcv
 ##' @param data a dataframe containing the data to be used
 ##' @param model the kind of model (either grm or gpcm)
@@ -128,7 +125,7 @@ IRTcv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasc
 }
 ##' Yet another unsuccessful IRT CV function (look at this one, there were good ideas in there)
 ##'
-##' .. content for \details{} ..
+##' {See description}
 ##' @title irt_cross_validate
 ##' @param x 
 ##' @return a dataframe containing observed and expected scores
@@ -167,9 +164,8 @@ res <- list(obsscores=obs, totscores=totscores2, abscores=ab.scores, model=model
 ##   }
 ##   reslist
 ## }
-##' Calculate 
-##'
-##' .. content for \details{} ..
+##' Calculate  something, depending on some other stuff
+##' {See description}
 ##' @title probcalc
 ##' @param x 
 ##' @param totscores 
@@ -179,8 +175,7 @@ probcalc <- function(x, totscores) {
     res <- sapply(x, calcprob, totscores)
   }
 ##' I really wonder if I can salvage anything from these
-##'
-##' .. content for \details{} ..
+##' {No really, why did I do all of this?}
 ##' @title calcprob
 ##' @param x 
 ##' @return calculated probabilities
@@ -231,8 +226,7 @@ calcprob <- function (x) {
 
 
 ##' A test to assess the adaquecy of an IRT model
-##'
-##' .. content for \details{} ..
+##' {See description}
 ##' @title CondProbIrt
 ##' @param x an IRT object
 ##' @return Something really cool
@@ -266,9 +260,8 @@ CondProbIrt <- function(x) {
   probmat
 }
 
-##' .. content for \description{Maybe a repeat of the earlier functions} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Maybe a repeat of the earlier functions}
+##' {Some stuff} 
 ##' @title getIRTestimates
 ##' @param fscores 
 ##' @return estimated abilities and their standard errors
@@ -279,9 +272,9 @@ getIRTestimates <- function(fscores) {
   names(abest) <- c("AbilityEst", "StdError")
   return(abest)
 }
-##' .. content for \description{Actual implemented IRT test on new data function} (no empty lines) ..
+##' {Actual implemented IRT test on new data function}
 ##'
-##' .. content for \details{} ..
+##' .. content for \details{Examines the difference in accuracy between a model estimated on the new data, versus the predictions from the old model on the new data} ..
 ##' @title testIRTModels
 ##' @param oldmodel the original IRT model
 ##' @param newdata the new data
@@ -313,9 +306,8 @@ testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "g
   res <- data.frame(ErrorApproximation=rea, Correlation=scorescor)
   return(res)
 }
-##' .. content for \description{Extract fit functions from an OpenMx object} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Extract fit functions from an OpenMx object} 
+##' {See desc} 
 ##' @title getMxFitFunctions
 ##' @param mx an mxFit object
 ##' @param label labels to apply to the fit functions returned
@@ -334,9 +326,8 @@ getMxFitFunctions <- function(mx, label=NULL) {
     }
     return(res)
 }
-##' .. content for \description{Average a set of IRT Models fit on different cross-validation splits} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Average a set of IRT Models fit on different cross-validation splits} 
+##' {Simple averaging of the coefficients}
 ##' @title irtAverage
 ##' @param sols IRT Models
 ##' @return a dataframe containing the averaged coefficients
@@ -347,9 +338,8 @@ irtAverage <- function(sols=list()) {
     return(res)
 }
             
-##' .. content for \description{Claims to be a smoothed AIC function, but actually just extracts the AIC value from an MxRAMModel or MxModel} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Claims to be a smoothed AIC function, but actually just extracts the AIC value from an MxRAMModel or MxModel}
+##' {See above} 
 ##' @title smoothAIC
 ##' @param model An MxModel object
 ##' @return the AIC of the object
@@ -363,9 +353,8 @@ smoothAIC <- function(model) {
     }
     return(res)
 }
-##' .. content for \description{Calculate the smoothed AIC across a set of models} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Calculate the smoothed AIC across a set of models}
+##' {Actually does something, even if its wrong}
 ##' @title smoothedAIC
 ##' @param models A set of MxModel objects
 ##' @return a vector of weights
@@ -382,9 +371,8 @@ smoothedAIC <- function (models) {
     return(weights)
 }
         
-##' .. content for \description{Average a set of IRT Factor Scores across Cross-validation Splits} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Average a set of IRT Factor Scores across Cross-validation Splits}
+##' {Thought I did this above?}
 ##' @title irtAverageFactorScores
 ##' @param scores IRT scores 
 ##' @return the average across all splits
