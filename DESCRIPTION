@@ -6,5 +6,5 @@ Description: Mostly psychometric functions
 Depends: R (>= 3.1.2)
 Imports:
 	psych
-License: GPL v3.0+
+License: GPL v3.0
 LazyData: true
