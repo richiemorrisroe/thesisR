@@ -1,3 +1,7 @@
+load("~/Code/thesisR/data/healthoptmind.rda")
+lotr <- dat[,with(dat, grep("LOTR", x=names(dat)))]
+rand <- dat[,with(dat, grep("RAND", x=names(dat)))]
+maas <- dat[,with(dat, grep("MAAS", x=names(dat)))]
 ##' .. content for \description{} (no empty lines) ..
 ##' I'm pretty sure I never finished this function
 ##' .. content for \details{} ..
@@ -47,23 +51,31 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
   class(res) <- "mfa"
   res
 }
-fit_factor_series <- function(data, factors, meth, rotation, scores) {
+fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
     fno <- factors
     if(length(fno)==1) {
         stop("factors should be a range of numbers")}
       fnolist <-  list()
   for (k in seq_along(along.with=fno)) {
-      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
+      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres", ...)
       fnolist[[k]] <- z
       ## browser()
   }
     fnolist
 }
-get_chi_square <- function(fs) {
+get_component <- function(fs, component) {
+    compq <- component
     fac <- unlist(sapply(fs, `[`, "factors"))
-    squares <- unlist(sapply(fs, `[`, "chi"))
-    res <- data.frame(chi_square=squares, factors=fac)
+    compdata <- unlist(sapply(fs, `[`, component))
+    res <- data.frame(component=compdata, factors=fac)
 }
+extractor <- function (fs, parameter) {
+    function(fs) {
+    get_component(fs, component=parameter)
+}
+    #return a function that extracts the given parameter
+}
+get_chi_square <- extractor(fs=test, parameter="chi")
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
