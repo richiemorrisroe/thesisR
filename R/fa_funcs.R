@@ -70,9 +70,8 @@ ExtractLoadings <- function (x, loadings=0.3) {
   xitemsload <- apply(x.uc.mat, 2, function (y) names(y[which(abs(y)>=loadings)])) #return the names of items which have appreciable loadings
   xitemsload
 }
-##' \description{Takes a psych fa object, and extracts the communalities and uniquenesses} (no empty lines) ..
-##' 
-##' \details{See description} ..
+##' {Takes a psych fa object, and extracts the communalities and uniquenesses}
+##' {See description}
 ##' @title Extracth2u2
 ##' @param x a psych fa object
 ##' @return a data frame containing uniquenesses and communalities
