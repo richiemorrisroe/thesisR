@@ -23,7 +23,7 @@ TrainTestSets <- function (x, data) {
   names(traintestlist) <- listnames
   traintestlist
 }
-##' {Takes the result of TestTrainSplit and actually splits
+##' {Takes the result of TestTrainSplit and actually splits it}
 ##' {See DESC}
 ##' @title SeperateTestandTrain
 ##' @param data 
