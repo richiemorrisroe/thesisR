@@ -55,15 +55,16 @@ FactorCor <- function (x, ...) {
   #names(res) <- factnames
   res.x <- xtable(res, ...)
 }
-##' This function returns a list of factor names (taken from the FA object) and the items which have an absolute correlation of greater than loadings
+##'  \description{This function returns a list of factor names (taken from the FA object) and the items which have an absolute correlation of greater than loadings}
 ##'
-##' Its not really that complicated, and honestly should be implemented generically
+##' \details{Its not really that complicated, and honestly should be implemented generically}
 ##' @title ExtractLoadings
-##' @param x
+##' @param x an fa object
 ##' @param loadings the cutoff point for reporting an association
 ##' @return the rownames of all items which have an absolute value greater than or equal to loadings
 ##' @author Richard Morrisroe
 ExtractLoadings <- function (x, loadings=0.3) {
+    stopifnot(class(x)==c("psych", "fa"))
   x.load <- x$loadings
   x.uc.mat <- as.data.frame(unclass(x.load))
   xitemsload <- apply(x.uc.mat, 2, function (y) names(y[which(abs(y)>=loadings)])) #return the names of items which have appreciable loadings
