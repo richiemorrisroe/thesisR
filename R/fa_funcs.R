@@ -39,9 +39,9 @@ FactorCoeff <- function (x, names=NULL) {
    }
    return(x.mat.df)
 }
-##' .. content for \description{Extracts the correlations of factors from an fa object}
+##' \description{Extracts the correlations of factors from an fa object}
 ##' 
-##' .. content for \details{gets the estimated factor correlations. Only really useful with oblique rotations}
+##' \details{gets the estimated factor correlations. Only really useful with oblique rotations}
 ##' @title FactorCor
 ##' @param x 
 ##' @param ... Further arguments passed to the xtable method
