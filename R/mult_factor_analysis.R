@@ -68,6 +68,7 @@ get_component <- function(fs, component) {
     fac <- unlist(sapply(fs, `[`, "factors"))
     compdata <- sapply(fs, `[`, component)
     if(length(compdata[[1]])>1) {
+        warning("aggregating results using the mean function")
         compdata <- unlist(lapply(compdata, mean, na.rm=TRUE))
     }
     res <- data.frame(component=compdata, factors=fac)
@@ -81,6 +82,11 @@ extractor <- function (fs, parameter) {
 chi <- extractor(parameter="chi")
 rms <- extractor(parameter="rms")
 communalities <- extractor(parameter="communality")
+communality <- function(fs) {
+    #deserves its own function
+    res <- lapply(fs, `[`, "communality")
+
+}
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
