@@ -1,6 +1,5 @@
-##' .. \description{Split the data into test and train sets. I'm reasonably certain that this is completely obsoleted by the createDataPartition function in the caret package}
-##'
-##' .. content for \details{} ..
+##' {Split the data into test and train sets. I'm reasonably certain that this is completely obsoleted by the createDataPartition function in the caret package}
+##' {See description - this does not do any kind of balancing to equalise class probabilites or response distribution across splits} ..
 ##' @title TrainTestSets
 ##' @param x the variable to split on
 ##' @param data the data to split
@@ -24,9 +23,8 @@ TrainTestSets <- function (x, data) {
   names(traintestlist) <- listnames
   traintestlist
 }
-##' \description{Takes the result of TestTrainSplit and actually splits it}
-##'
-##' .. content for \details{} ..
+##' {Takes the result of TestTrainSplit and actually splits
+##' {See DESC}
 ##' @title SeperateTestandTrain
 ##' @param data 
 ##' @param test 
@@ -43,9 +41,8 @@ SeperateTestandTrain <- function(data, test=TRUE) {
   }
   res
 }
-##' .. \description{This was a wrapper around train to test the theory that the RF was actually predicting placebo perfectly}
-##'
-##' .. content for \details{} ..
+##' {This was a wrapper around train to test the theory that the RF was actually predicting placebo perfectly}
+##' {See desc} 
 ##' @title Trainfolds
 ##' @param data 
 ##' @param Form 
@@ -65,9 +62,7 @@ Trainfolds <- function(data, Form, control, sizes, metric, updown) {
   cvresults
 }
 
-##' \description{Yet another split sample function}
-##'
-##' .. content for \details{} ..
+##' {Yet another split sample function}
 ##' @name package-thesisR
 ##' @docType package
 ##' @title some_other_title
@@ -89,9 +84,8 @@ splitSample <- function(x, split) {
   }
 samplist
 }
-##' .. content for \description{A function for performing repeated Cross-validation} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {A function for performing repeated Cross-validation} (no empty lines) ..
+##'  \details{See description}
 ##' @title repeatCV
 ##' @param form a formula describing the model
 ##' @param data the data to fit on
@@ -120,9 +114,8 @@ repeatCV <- function(form, data, method=method, n, responsevariable, ...) {
 
   res2 <- list(res, Accuracy)
 }
-##' .. content for \description{calculate the root mean square error of approximattion for a dataframe containing columns named pred and obs} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {calculate the root mean square error of approximattion for a dataframe containing columns named pred and obs} 
+##' \details{See Desc} 
 ##' @title rmsea
 ##' @param data a dataframe containing pred and obs columns
 ##' @return a scalar number for the RMSEA
