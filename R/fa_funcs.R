@@ -55,9 +55,9 @@ FactorCor <- function (x, ...) {
   #names(res) <- factnames
   res.x <- xtable(res, ...)
 }
-##' .. content for \description{} (no empty lines) ..
+##' This function returns a list of factor names (taken from the FA object) and the items which have an absolute correlation of greater than loadings
 ##'
-##' .. content for \details{} ..
+##' Its not really that complicated, and honestly should be implemented generically
 ##' @title ExtractLoadings
 ##' @param x
 ##' @param loadings the cutoff point for reporting an association
