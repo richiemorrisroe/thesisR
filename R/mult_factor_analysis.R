@@ -20,7 +20,7 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
   fno <- factors
   rotlist <- list()
   for (i in seq_along(along.with=allrot)) {
-   x <- fa(na.omit(data), nfactors=fno, rotate=allrot[i], fm="ml")
+     x <- psych::fa(na.omit(data), nfactors=fno, rotate=allrot[i], fm="ml")
   assign(paste("rot", i,sep=""), value=x)
 
    rotlist[[i]] <- get(paste("rot", i, sep=""))
@@ -36,8 +36,33 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
     fmlist[[j]] <- get(paste("meth", j, sep=""))
 }
   names(fmlist) <- meth
-  res <- c(factormethods=fmlist, rotations=reslist)
-
+  fnolist <-  list()
+  for (k in seq_along(along.with=fno)) {
+      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
+      assign(paste("no_fac", k, sep=""), value=z)
+      fnolist[[k]] <- get(paste("fno", k, sep=""))
+  }
+  
+  res <- c(factormethods=fmlist, rotations=reslist, factors=fnolist)
+  class(res) <- "mfa"
+  res
+}
+fit_factor_series <- function(data, factors, meth, rotation, scores) {
+    fno <- factors
+    if(length(fno)==1) {
+        stop("factors should be a range of numbers")}
+      fnolist <-  list()
+  for (k in seq_along(along.with=fno)) {
+      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
+      fnolist[[k]] <- z
+      ## browser()
+  }
+    fnolist
+}
+get_chi_square <- function(fs) {
+    fac <- unlist(sapply(fs, `[`, "factors"))
+    squares <- unlist(sapply(fs, `[`, "chi"))
+    res <- data.frame(chi_square=squares, factors=fac)
 }
 ##' .. content for \description{} (no empty lines) ..
 ##'
