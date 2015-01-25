@@ -5,7 +5,7 @@ Authors@R: "Richie Morrisroe <richie.morrisroe@gmail.com> [aut, cre]"
 Description: Mostly psychometric functions
 Depends: R (>= 3.1.2)
 Imports: 
-	psych,
+	 psych,
     ggplot2,
     reshape2
 License: GPL v3.0
