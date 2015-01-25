@@ -35,14 +35,14 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
 
   fmlist <- list()
   for (j in seq_along(along.with=meth)) {
-    y <- fa(na.omit(data), nfactors=fno, rotate="oblimin", fm=meth[j])
+    y <- psych::fa(na.omit(data), nfactors=fno, rotate="oblimin", fm=meth[j])
     assign(paste("meth", j, sep=""), value=y)
     fmlist[[j]] <- get(paste("meth", j, sep=""))
 }
   names(fmlist) <- meth
   fnolist <-  list()
   for (k in seq_along(along.with=fno)) {
-      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
+      z <- psych::fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
       assign(paste("no_fac", k, sep=""), value=z)
       fnolist[[k]] <- get(paste("fno", k, sep=""))
   }
@@ -57,7 +57,7 @@ fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
         stop("factors should be a range of numbers")}
       fnolist <-  list()
   for (k in seq_along(along.with=fno)) {
-      z <- fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres", ...)
+      z <- psych::fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres", ...)
       fnolist[[k]] <- z
       ## browser()
   }
