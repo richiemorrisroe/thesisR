@@ -2,10 +2,7 @@
 
 \begin{document}
 <<>>=
-require(psych)
-require(reshape2)
-require(ggplot2)
-source("../R/mult_factor_analysis.R")
+require(thesisR)
 load("../data/healthoptmind.rda")
 rand.series <- fit_factor_series(rand, factors=1:12)
 comm.t <- communality(fs=rand.series)
