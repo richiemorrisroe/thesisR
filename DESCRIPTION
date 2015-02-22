@@ -8,5 +8,5 @@ Imports:
 	 psych,
     ggplot2,
     reshape2
-License: GPL v3.0
+License: GPL-3
 LazyData: true
