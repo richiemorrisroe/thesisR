@@ -1,7 +1,7 @@
-load("~/Code/thesisR/data/healthoptmind.rda")
-lotr <- dat[,with(dat, grep("LOTR", x=names(dat)))]
-rand <- dat[,with(dat, grep("RAND", x=names(dat)))]
-maas <- dat[,with(dat, grep("MAAS", x=names(dat)))]
+## load("~/Code/thesisR/data/healthoptmind.rda")
+## lotr <- dat[,with(dat, grep("LOTR", x=names(dat)))]
+## rand <- dat[,with(dat, grep("RAND", x=names(dat)))]
+## maas <- dat[,with(dat, grep("MAAS", x=names(dat)))]
 ##' .. content for \description{} (no empty lines) ..
 ##' I'm pretty sure I never finished this function
 ##' .. content for \details{} ..
@@ -13,14 +13,16 @@ maas <- dat[,with(dat, grep("MAAS", x=names(dat)))]
 ##' @param scores Boolean, should factor scores be returned
 ##' @return an object of class mfa, containing all of the relevant information
 ##' @author Richard Morrisroe
-MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
+mult_factor_analysis <- function (data, factors,
+                                  meth=list("minres", "wls", "gls", "pa", "ml"),
+                                  rotation=list("none", "varimax", "quartimax", "bentlerT", "geominT","promax", "oblimin","simplimax", "bentlerQ", "geominQ", "biquartimin" ),
+                                  scores=list("regression", "Thurstone", "Anderson", "Bartlett", "tenBerge")) {
   orthrotations <- c("none", "varimax", "quartimax", "bentlerT", "geominT" )
   obliquerotations <- c("promax", "oblimin",
           "simplimax", "bentlerQ", "geominQ", "biquartimin")
   allrot <- c(orthrotations, obliquerotations)
 
   meth <- c("minres", "wls", "gls", "pa", "ml")
-  Scores <- c("regression", "Thurstone", "Anderson", "Bartlett", "tenBerge")
   fno <- factors
   rotlist <- list()
   for (i in seq_along(along.with=allrot)) {
@@ -32,17 +34,18 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
 }
   names(rotlist) <- allrot
   reslist <- rotlist
-
   fmlist <- list()
   for (j in seq_along(along.with=meth)) {
-    y <- psych::fa(na.omit(data), nfactors=fno, rotate="oblimin", fm=meth[j])
+    y <- psych::fa(na.omit(data), nfactors=fno,
+                   rotate="oblimin", fm=meth[j])
     assign(paste("meth", j, sep=""), value=y)
     fmlist[[j]] <- get(paste("meth", j, sep=""))
 }
   names(fmlist) <- meth
   fnolist <-  list()
   for (k in seq_along(along.with=fno)) {
-      z <- psych::fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres")
+      z <- psych::fa(na.omit(data), nfactors=fno[k],
+                     rotate="oblimin", fm="minres")
       assign(paste("no_fac", k, sep=""), value=z)
       fnolist[[k]] <- get(paste("fno", k, sep=""))
   }
@@ -53,25 +56,26 @@ MultFactorAnalysis <- function (data, factors, meth, rotation, scores) {
 }
 fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
     fno <- factors
-    if(length(fno)==1) {
-        stop("factors should be a range of numbers")}
+    if(length(fno) == 1) {
+        stop("factors should be a range of numbers")
+    }
       fnolist <-  list()
   for (k in seq_along(along.with=fno)) {
-      z <- psych::fa(na.omit(data), nfactors=fno[k], rotate="oblimin", fm="minres", ...)
+      z <- psych::fa(na.omit(data), nfactors=fno[k],
+                     rotate="oblimin", fm="minres", ...)
       fnolist[[k]] <- z
       ## browser()
   }
     fnolist
 }
 get_component <- function(fs, component) {
-    compq <- component
     fac <- unlist(sapply(fs, `[`, "factors"))
     compdata <- sapply(fs, `[`, component)
-    if(length(compdata[[1]])>1) {
+    if(length(compdata[[1]]) > 1) {
         warning("aggregating results using the mean function")
         compdata <- unlist(lapply(compdata, mean, na.rm=TRUE))
     }
-    res <- data.frame(component=compdata, factors=fac)
+    data.frame(component=compdata, factors=fac)
 }
 extractor <- function (fs, parameter) {
     function(fs) {
@@ -84,7 +88,7 @@ rms <- extractor(parameter="rms")
 communalities <- extractor(parameter="communality")
 communality <- function(fs) {
     #deserves its own function
-    res <- lapply(fs, `[`, "communality")
+     lapply(fs, `[`, "communality")
 
 }
 ##' .. content for \description{} (no empty lines) ..
@@ -120,7 +124,7 @@ combineLoadings <-  function (mfa) {
   }
   loadings
 
-  meanload <- lapply(loadings, function (x) Reduce('+', x))
+  lapply(loadings, function (x) Reduce("+", x))
 }
 ##' .. content for \description{} (no empty lines) ..
 ##' Again, I don't think I actually finished this function
