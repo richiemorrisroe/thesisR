@@ -4,8 +4,8 @@
 ##' @param Recodings A list of some recodings - need to look at how function is used to understand what the hell this is
 ##' @return a transformed dataframe with the new recodings
 ##' @author Richie Morrisroe
-RecodeMany <- function (data, vars, Recodings){
-  varlist=list(vars)
+recode_many <- function (data, vars, Recodings){
+  varlist = list(vars)
 dataret <- data
   for (i in 1:length(vars)) {
     dataret[,i] <- car::recode(data[,i], recodes=Recodings)

@@ -1,7 +1,7 @@
 ##' .. Essentially a wrapper around a particular sequence of glmnet functions
 ##'
 ##' ..
-##' @title penalisedRegression
+##' @title penalised_regression
 ##' @param x a dataframe of all numeric column variables
 ##' @param y the response variable
 ##' @param testdata the new dataset to calculate coefficients on
@@ -12,7 +12,8 @@
 ##' @param family as per glm
 ##' @return either a vector of predictions or the coefficients of the new model (as a sparse matrix)
 ##' @author Richie Morrisroe
-penalisedRegression <- function(x, y,  testdata, newy, alpha, nfolds=10,type=c("coefficients", "response"), family="gaussian") {
+
+penalised_regression <- function(x, y,  testdata, newy, alpha, nfolds=10,type=c("coefficients", "response"), family="gaussian") {
   x.mat <- as.matrix(x)
   testdata.mat <- as.matrix(testdata)
   ## browser()
