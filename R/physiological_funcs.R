@@ -1,12 +1,12 @@
 ##' {Import all physiological data files}
 ##'
 ##' .. content for \details{} ..
-##' @title fileImport
+##' @title file_import
 ##' @param directory a directory in which to look for files
 ##' @param pattern a regualar expression matching a set of files
 ##' @return A list of files which match the pattern
 ##' @author Richie Morrisroe
-fileImport <- function(directory, pattern) {
+file_import <- function(directory, pattern) {
   files <- list.files(directory, pattern=pattern, full.names=TRUE)
   file.list <- lapply(files, read.table, header=FALSE)
   files2 <- gsub(".*-.*-([0-9][0-9][0-9][0-9][0-9]?).txt", "\\1", x=files)
@@ -16,12 +16,12 @@ fileImport <- function(directory, pattern) {
 }
 ##' {Convert a list (of physiological data files) to a dataframe}
 ##' .. content for \details{} ..
-##' @title listToDf
+##' @title list_to_df
 ##' @param data the datafile
-##' @param ind 
+##' @param ind indices to examine
 ##' @return a dataframe of required data
 ##' @author Richie Morrisroe
-listToDf <- function(data, ind) {
+list_to_df <- function(data, ind) {
   dnames <- names(data)
   rows <- sapply(data, nrow)
   maxrows <- max(rows)
@@ -39,16 +39,16 @@ p  }
   }
   res
 }
-##' {read in files and write them out again} 
+##' {read in files and write out each column to a seperate file} 
 ##'
-##' .. content for \details{} ..
-##' @title lazyload
+##' {This is hacked together to suit my use cases for physiological files, and is probably not useful to anyone}
+##' @title lazy_load
 ##' @param files the files to read in
 ##' @param names the pattern of files to read
 ##' @param cols in which columns are needed to be wrote out again
 ##' @return NULL (called for side effects)
 ##' @author Richie Morrisroe
-lazyload <- function (files, names, cols) {
+lazy_load <- function (files, names, cols) {
   filetype <- paste(names, "-", sep="")
   outfilenames <- gsub("Richi[e]?-",filetype, x=files)
   outfilenames2 <- gsub(".*/Richieoutput/", "", x=outfilenames)
@@ -61,12 +61,12 @@ lazyload <- function (files, names, cols) {
 }
 ##' {Take a list of files, read them in and calculate the number of lines in each of them} 
 ##'
-##' .. content for \details{} ..
-##' @title lazyload
+##' .. content for \details{This might be useful for someone else, but there are some hardcoded numbers in here that will trip you up} ..
+##' @title lazy_length
 ##' @param files a list of files
 ##' @return a matrix containing a file identifier and its length
 ##' @author Richie Morrisroe
-lazylength <- function(files) {
+lazy_length <- function(files) {
     tp <- gsub(".*/", "", x=files)
     tp.split <- strsplit(as.character(tp), "-")
     pp <- lapply(tp.split, "[", 3)
@@ -86,12 +86,12 @@ lazylength <- function(files) {
 
 ##' {Internal thesis function to get the participant number for use with lazylength} 
 ##'
-##' .. content for \details{} ..
-##' @title getPPNo
+##' .. content for \details{Again, not massively useful for anyone else} ..
+##' @title get_participant_number
 ##' @param files 
 ##' @return the identifier for each file
 ##' @author Richie Morrisroe
-getPPNo <- function(files) {
+get_participant_number <- function(files) {
     tp <- gsub(".*/", "", x=files)
     tp.split <- strsplit(as.character(tp), "-")
     pp <- lapply(tp.split, "[", 3)
@@ -101,11 +101,11 @@ getPPNo <- function(files) {
 ##' {A better implementation of lazylength} 
 ##'
 ##' .. content for \details{} ..
-##' @title lazylength
+##' @title lazy_length2
 ##' @param files a vector of files
 ##' @return a file identifier and the nrow() of each file 
 ##' @author Richie Morrisroe
-lazylength <- function(files) {
+lazy_length <- function(files) {
     pp <- getPPNo(files)
     ## browser()
     lengthmat <- matrix(NA, 114, ncol=2)
@@ -121,13 +121,13 @@ lazylength <- function(files) {
 ##' {Calculate the overall mean by file for each file} 
 ##'
 ##' .. content for \details{} ..
-##' @title lazymean
+##' @title lazy_mean
 ##' @param path path in which files can be found
 ##' @param pattern a regular expression matching the files
-##' @param ... other arguments passed through to other methods
+##' @param ... other arguments passed through to list files
 ##' @return a mean response for each file in the specified column
 ##' @author Richie Morrisroe
-lazymean <- function( path, pattern, ...) {
+lazy_mean <- function( path, pattern, ...) {
     lsfiles <- list.files(path, pattern, ...)
     pp <- getPPNo(lsfiles)
     meanmat <- matrix(NA, length(lsfiles), ncol=2)
@@ -140,8 +140,8 @@ lazymean <- function( path, pattern, ...) {
 }
 ##' {roll up a series of large files into simpler aggregates} 
 ##'
-##' .. content for \details{} ..
-##' @title lazydownsample
+##' {Now this could actually be useful. Take a set of files, calculate some summary statistics over particular windows and return a new, smaller file consisting of the aggregated results} 
+##' @title lazy_downsample
 ##' @param path a path where files can be found
 ##' @param pattern a pattern to match each file
 ##' @param aggregate the number of rows to aggregate
@@ -149,7 +149,7 @@ lazymean <- function( path, pattern, ...) {
 ##' @param ... other arguments passed to the aggregation function
 ##' @return a dataframe containing the aggregated data
 ##' @author Richie Morrisroe
-lazydownsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
+lazy_downsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
   stopifnot(is.numeric(aggregate))
     lsfiles <- list.files(path, pattern, full.names=TRUE)
     pp <- getPPNo(lsfiles)
@@ -172,12 +172,12 @@ lazydownsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
         
 ##' {Calculate the range of a set of data} 
 ##'
-##' .. content for \details{} ..
-##' @title diffunc
+##' .. content for \details{get range of a set of data, useful for HRV peak analysis} ..
+##' @title diff_func
 ##' @param data a dataframe containing one variable
 ##' @return the difference between the maximum and the minimum values
 ##' @author Richie Morrisroe
-difffunc <- function(data) {
+diff_func <- function(data) {
   max <- which.max(data)
   min <- which.min(data)
   time <- abs(max-min)
@@ -185,8 +185,8 @@ difffunc <- function(data) {
 }
 ##' {A function to interpolate lower sample data to match higher sample data - locf interpolation} 
 ##'
-##' .. content for \details{} ..
-##' @title interpolate.pain
+##' .. content for \details{This has a truly terrible name, and some godawful hacks that make it probable that it contains bugs} ..
+##' @title interpolate_pain
 ##' @param pain the data to interpolate
 ##' @param padding the offsets at which to start the interpolation
 ##' @return A dataframe containing the interpolated data
@@ -223,7 +223,7 @@ interpolate.pain <- function(pain, padding) {
     }
 ##' {Another interpolation function} 
 ##' TODO: figure out which one of these is actually used
-##' .. content for \details{} ..
+##' .. content for \details{Yeah, I have two different interpolation functions, both probably incorrect in different ways} ..
 ##' @title interpolate2
 ##' @param painscores 
 ##' @param painmetadata 
