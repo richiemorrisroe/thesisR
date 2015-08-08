@@ -66,6 +66,7 @@ fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
       fnolist[[k]] <- z
       ## browser()
   }
+    class(fnolist) <- c("factor_series", "fa")
     fnolist
 }
 get_component <- function(fs, component) {
