@@ -1,6 +1,6 @@
 ##' .. Essentially a wrapper around a particular sequence of glmnet functions
 ##'
-##' ..
+##' .. Thats just it. 
 ##' @title penalised_regression
 ##' @param x a dataframe of all numeric column variables
 ##' @param y the response variable
@@ -31,7 +31,7 @@ penalised_regression <- function(x, y,  testdata, newy, alpha, nfolds=10,type=c(
 ##' .. content for \description{Something that would have been rocking, had I been able to make it work} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title tuneLoess
+##' @title tune_loess
 ##' @param formula a formula describing the model
 ##' @param data the dataset to fit the model to
 ##' @param newdata the dataset to predict over
