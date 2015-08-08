@@ -7,6 +7,8 @@ Depends: R (>= 3.1.2)
 Imports: 
 	 psych,
     ggplot2,
-    reshape2
+    reshape2,
+    plyr,
+    GPArotation
 License: GPL-3
 LazyData: true
