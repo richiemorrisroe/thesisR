@@ -1,15 +1,15 @@
-##' .. content for \description{A function to calculate the IAT score (the D measure from Greenwald (2003)} (no empty lines) ..
+##' {A function to calculate the IAT score (the D measure from Greenwald (2003)}
 ##'
 ##' .. content for \details{} ..
-##' @title Calculate the IAT score of a dataset
+##' @title calc_iat_scores
 ##' @param data - a dataframe containing the stimuli names and response times, with one row per block
 ##' @param Code the participant identifier code
 ##' @param method either use mean or median to calculate scores
 ##' @param words a vector of strings giving the names of the stimuli
 ##' @return a dataframe containing the mean response times for each of the critical blocks (3 and 5) and the IAT score calculated by the specified method
 ##' @author Richard Morrisroe
-calcIatScores <- function(data, Code, method=c("mean", "median"), words) {
-  if(nrow(data)%%5!=0) {
+calc_iat_scores <- function(data, Code, method=c("mean", "median"), words) {
+  if(nrow(data)%% 5 !=0) {
     warning("not all participants have complete responses")
 
   partlen <- with(data, tapply(Block, Code,length))
@@ -63,15 +63,15 @@ res <- data.frame(scores=scores, IAT=iatscore, Block3=stimblock3, Block5=stimblo
                   ## t=b3.corr, Block5Correct=b5.corr
                   )
 }
-##' .. content for \description{Get the difference between two sets of IAT scores} (no empty lines) ..
+##' {Get the difference between two sets of IAT scores}
 ##'
 ##' .. content for \details{} ..
-##' @title iatDiff
+##' @title iat_diff
 ##' @param x an IAT score
 ##' @param y an IAT score
 ##' @return A dataframe containing the differences between the two scores
 ##' @author Richie Morrisroe
-iatDiff <- function(x, y) {
+iat_diff <- function(x, y) {
   res <- matrix(NA, ncol=length(x), nrow=nrow(x))
   for (i in 1:length(x)) {
     print(i)
