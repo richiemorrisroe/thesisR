@@ -1,11 +1,11 @@
-##' {Return an xtable object of an IRT easiness/difficulty parameters} (no empty lines) ..
+##' {Return an xtable object of an IRT easiness/difficulty parameters}
 ##' {Takes a GRM or GPCM object and returns a decidely non-standard table} 
-##' @title IrtXtab
+##' @title irt_xtab
 ##' @param x an IRT model object of <some_bunch> of classes
 ##' @param ... arguments based to xtable function
 ##' @return an xtable representation of the difficulty and/or discrimination parameters
 ##' @author Richard Morrisroe
-IrtXtab <- function (x, ...) {
+irt_xtab <- function (x, ...) {
     eta<-x$etapar #$
     se<-x$se.eta #$
     eta.mat<-as.matrix(eta)
@@ -17,12 +17,12 @@ IrtXtab <- function (x, ...) {
 }
 ##' {Wrapper around ggplot for a person-item difficulty plot}
 ##' {Not much, really}
-##' @title ggplotGRM
+##' @title ggplot_grm
 ##' @param grm an IRT GRM model object
 ##' @param ... other methods passed to plotting function
 ##' @return a ggplot object
 ##' @author Richard Morrisroe
-ggplotGRM <- function (grm, ...) {
+ggplot_grm <- function (grm, ...) {
     x <- coef(grm)
     x <- as.matrix(x)
     x <- x[,-ncol(x)]
@@ -79,23 +79,23 @@ coef2mat <- function (gpcm) {
 ##' Extract the predictions from an IRT fascore object
 ##'
 ##' {Selects useful information from an object inheriting from grm or gpcm}
-##' @title getIrtPreds
+##' @title get_irt_preds
 ##' @param x  an IRT model object
 ##' @return a dataframe containing observed scores, expected scores, the results of a z-test, and the se of the z-test
 ##' @author Richie Morrisroe
-getIrtPreds <- function (x) {
+get_irt_preds <- function (x) {
     res <- x$score.dat[,c("Obs", "Exp", "z1","se.z1")]
     res
 }
 ##' compare Z-scores for two IRT models
 ##'
 ##' content for \details{Examine the differences in z-scores between two (and only two) IRT models}
-##' @title compareIRTscores
+##' @title compare_irt_scores
 ##' @param x an IRT model
 ##' @param y an IRT model
 ##' @return a list containing the (Pearson) correlations between the two z-scores, and the squared differences between the two sets of scores
 ##' @author Richie Morrisroe
-compareIRTscores <- function (x, y) {
+compare_irt_scores <- function (x, y) {
     scores.x <- x$z1
     scores.y <- y$z1
     cor.xy <- cor(scores.x, scores.y, method="pearson", use="pairwise.complete.obs")
@@ -106,7 +106,7 @@ compareIRTscores <- function (x, y) {
 ##' .. Unfinished function used to perform cross-validation over IRT models
 ##'
 ##' {See Description}
-##' @title IRTcv
+##' @title irt_cv
 ##' @param data a dataframe containing the data to be used
 ##' @param model the kind of model (either grm or gpcm)
 ##' @param constraint the constraint to use - see documentation for grm and gpcm objects
@@ -114,7 +114,7 @@ compareIRTscores <- function (x, y) {
 ##' @param .... 
 ##' @return a test and train set
 ##' @author Richie Morrisroe
-IRTcv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasch", "1PL", "gpcm"), splits=10, ....) {
+irt_cv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasch", "1PL", "gpcm"), splits=10, ....) {
     if(is.dataframe(data) ||is.matrix(data))
         stop("this function needs matrix or dataframe input")
     splittedsamples <- splitSample(data, splits)
@@ -166,17 +166,17 @@ irt_cross_validate<- function(x) {
 ## }
 ##' Calculate  something, depending on some other stuff
 ##' {See description}
-##' @title probcalc
+##' @title prob_calc
 ##' @param x 
 ##' @param totscores 
 ##' @return calculated probabilities
 ##' @author Richie Morrisroe
-probcalc <- function(x, totscores) {
+prob_calc <- function(x, totscores) {
     res <- sapply(x, calcprob, totscores)
 }
 ##' I really wonder if I can salvage anything from these
 ##' {No really, why did I do all of this?}
-##' @title calcprob
+##' @title calc_prob
 ##' @param x 
 ##' @return calculated probabilities
 ##' @author Richie Morrisroe
@@ -196,6 +196,7 @@ calcprob <- function (x) {
                     probcal[[i]] <- NA
                 }
                 else{
+                    ##wtf? why is the variable totscores being introduced?
                     p1 <- na.omit(length((y==y[j])))/ length(totscores)
                     p2 <- length(y==y[j])/length(na.omit(totscores))
                     p3 <- na.omit(length(y[j]))/length(na.omit(y))
@@ -227,11 +228,11 @@ calcprob <- function (x) {
 
 ##' A test to assess the adaquecy of an IRT model
 ##' {See description}
-##' @title CondProbIrt
+##' @title cond_prob_irt
 ##' @param x an IRT object
 ##' @return Something really cool
 ##' @author Richie Morrisroe
-CondProbIrt <- function(x) {
+cond_prob_irt <- function(x) {
     abilities <- x[,1]
     totscores <- x[,2]
     s.ord <- order(x$totscores2)
@@ -262,11 +263,11 @@ CondProbIrt <- function(x) {
 
 ##' {Maybe a repeat of the earlier functions}
 ##' {Some stuff} 
-##' @title getIRTestimates
+##' @title get_irt_estimates
 ##' @param fscores 
 ##' @return estimated abilities and their standard errors
 ##' @author Richie Morrisroe
-getIRTestimates <- function(fscores) {
+get_irt_estimates <- function(fscores) {
     data <- fscores[["score.dat"]]
     abest <- data[,c("z1", "se.z1")]
     names(abest) <- c("AbilityEst", "StdError")
@@ -275,7 +276,7 @@ getIRTestimates <- function(fscores) {
 ##' {Actual implemented IRT test on new data function}
 ##'
 ##' .. content for \details{Examines the difference in accuracy between a model estimated on the new data, versus the predictions from the old model on the new data} ..
-##' @title testIRTModels
+##' @title test_irt_models
 ##' @param oldmodel the original IRT model
 ##' @param newdata the new data
 ##' @param gpcmconstraint the constraint if the model is gpcm
@@ -308,12 +309,12 @@ testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "g
 }
 ##' {Extract fit functions from an OpenMx object} 
 ##' {See desc} 
-##' @title getMxFitFunctions
+##' @title get_mx_fit_functions
 ##' @param mx an mxFit object
 ##' @param label labels to apply to the fit functions returned
 ##' @return a dataframe containing the fit functions
 ##' @author Richie Morrisroe
-getMxFitFunctions <- function(mx, label=NULL) {
+get_mxfit_functions <- function(mx, label=NULL) {
     summ <- summary(mx)
     bic <- summ$BIC.Mx
     aic <- summ$AIC.Mx
@@ -328,11 +329,11 @@ getMxFitFunctions <- function(mx, label=NULL) {
 }
 ##' {Average a set of IRT Models fit on different cross-validation splits} 
 ##' {Simple averaging of the coefficients}
-##' @title irtAverage
+##' @title irt_average
 ##' @param sols IRT Models
 ##' @return a dataframe containing the averaged coefficients
 ##' @author Richie Morrisroe
-irtAverage <- function(sols=list()) {
+irt_average <- function(sols=list()) {
     coef <- lapply(sols, coef)
     res <- Reduce(`+`, x=coef)/length(coef)
     return(res)
@@ -340,11 +341,11 @@ irtAverage <- function(sols=list()) {
 
 ##' {Claims to be a smoothed AIC function, but actually just extracts the AIC value from an MxRAMModel or MxModel}
 ##' {See above} 
-##' @title smoothAIC
+##' @title smooth_AIC
 ##' @param model An MxModel object
 ##' @return the AIC of the object
 ##' @author Richie Morrisroe
-smoothAIC <- function(model) {
+smooth_AIC <- function(model) {
     if(class(model) %in% c("MxRAMModel", "MxModel")) {
         res <- summary(model)$AIC.Mx
     }
@@ -355,11 +356,11 @@ smoothAIC <- function(model) {
 }
 ##' {Calculate the smoothed AIC across a set of models}
 ##' {Actually does something, even if its wrong}
-##' @title smoothedAIC
+##' @title smoothed_AIC
 ##' @param models A set of MxModel objects
 ##' @return a vector of weights
 ##' @author Richie Morrisroe
-smoothedAIC <- function (models) {
+smoothed_AIC <- function (models) {
     information <- lapply(models, smoothAIC)
     exp.info <- lapply(information, function(x) exp(-0.5*x))
     info <- Reduce(`+`, exp.info)
@@ -373,11 +374,11 @@ smoothedAIC <- function (models) {
 
 ##' {Average a set of IRT Factor Scores across Cross-validation Splits}
 ##' {Thought I did this above?}
-##' @title irtAverageFactorScores
+##' @title irt_average_factor_scores
 ##' @param scores IRT scores 
 ##' @return the average across all splits
 ##' @author Richie Morrisroe
-irtAverageFactorScores <- function (scores=list) {
+irt_average_factor_scores <- function (scores=list) {
     abilities <- sapply(scores, `[`, 1)
     ab.average <- Reduce(`+`, abilities)/length(abilities)
     names(ab.average) <- "AbilityEst"
