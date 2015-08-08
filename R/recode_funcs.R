@@ -1,4 +1,4 @@
-##' @title RecodeMany
+##' @title recode_many
 ##' @param data the dataframe containing the items to be recoded
 ##' @param vars the variables to recode
 ##' @param Recodings A list of some recodings - need to look at how function is used to understand what the hell this is
@@ -17,11 +17,11 @@ return(dataret)
 ##' creates the RAND MOS sum scores
 ##'
 ##' This is unlikely to ever be useful to anyone bar me or potential replicators of my thesis
-##' @title createSumScores
+##' @title create_sum_scores
 ##' @param data a dataframe containing the RAND MOS data
 ##' @return a dataframe containing the sum scores for each variable
 ##' @author Richie Morrisroe
-createSumScores <- function(data) {
+create_sum_scores <- function(data) {
 data$physfun <- rowMeans(data[,grep("RANDQ[3456789]$|RANDQ[1][012]$",x=names(data))], na.rm=TRUE)
 data$rolelim <- rowMeans(data[,grep("RANDQ[1][3456]$",x=names(data))], na.rm=TRUE)
 data$rolelimem <- rowMeans(data[,grep("RANDQ[1][789]$",x=names(data))], na.rm=TRUE)
