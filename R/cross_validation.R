@@ -1,11 +1,11 @@
 ##' {Split the data into test and train sets. I'm reasonably certain that this is completely obsoleted by the createDataPartition function in the caret package}
 ##' {See description - this does not do any kind of balancing to equalise class probabilites or response distribution across splits} ..
-##' @title TrainTestSets
+##' @title train_test_sets
 ##' @param x the variable to split on
 ##' @param data the data to split
 ##' @return Some kind of list?
 ##' @author Richie Morrisroe
-TrainTestSets <- function (x, data) {
+train_test_sets <- function (x, data) {
     testlist <- list()
     trainlist <- list()
     for (i in 1:length(x)) {
@@ -25,12 +25,12 @@ TrainTestSets <- function (x, data) {
 }
 ##' {Takes the result of TestTrainSplit and actually splits it}
 ##' {See DESC}
-##' @title SeperateTestandTrain
+##' @title seperate_test_and_train
 ##' @param data 
 ##' @param test 
 ##' @return a dataframe
 ##' @author Richie Morrisroe
-SeperateTestandTrain <- function(data, test=TRUE) {
+seperate_test_and_train <- function(data, test=TRUE) {
     if(test) {
         indtest <- grep("Test$", names(data))
         res <- data[indtest]
@@ -43,18 +43,19 @@ SeperateTestandTrain <- function(data, test=TRUE) {
 }
 ##' {This was a wrapper around train to test the theory that the RF was actually predicting placebo perfectly}
 ##' {See desc} 
-##' @title Trainfolds
+##' @title train_folds
 ##' @param data 
 ##' @param Form 
 ##' @param control 
 ##' @param sizes 
 ##' @param metric 
 ##' @param updown 
-##' @return models fits from the cv process
+##' @return model fits from the cv process
 ##' @author Richie Morrisroe
-Trainfolds <- function(data, Form, control, sizes, metric, updown) {
+train_folds <- function(data, Form, control, sizes, metric, updown) {
     cvresults <- list()
     for (i in 1:length(data)) {
+        #again, another bug that could be caused by lexical scoping
         res <- train(form=Form, data=data, na.action="na.omit", size=sizes, metric=metric, maximise=updown, control=rfeControl)
         cvresults[[i]] <- res
     }
@@ -65,12 +66,12 @@ Trainfolds <- function(data, Form, control, sizes, metric, updown) {
 ##' {Yet another split sample function}
 ##' @name package-thesisR
 ##' @docType package
-##' @title some_other_title
+##' @title split_sample
 ##' @param x the data
 ##' @param split the number of splits to make
 ##' @return a list containing the splits
 ##' @author Richie Morrisroe
-splitSample <- function(x, split) {
+split_sample <- function(x, split) {
     xlen <- nrow(x)
     indices <- sample(1:xlen, xlen, replace=FALSE)
     splitlen <- xlen/split
@@ -86,7 +87,7 @@ splitSample <- function(x, split) {
 }
 ##' {A function for performing repeated Cross-validation} (no empty lines) ..
 ##'  \details{See description}
-##' @title repeatCV
+##' @title repeat_cv
 ##' @param form a formula describing the model
 ##' @param data the data to fit on
 ##' @param method not implemented
@@ -95,10 +96,10 @@ splitSample <- function(x, split) {
 ##' @param ... arguments passed to the train function
 ##' @return a nested list containing the confusionMatrix for the model on test data, and the accuracy parameter
 ##' @author Richie Morrisroe
-repeatCV <- function(form, data, method=method, n, responsevariable, ...) {
+repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
     res <- vector(length=n, mode="list")
     Accuracy <- vector(length=n, mode="numeric")
-    data2 <- na.omit(iatandexpfull)
+    data2 <- na.omit(data)
     variable <- grep(responsevariable, x=names(data))
     for (i in 1:n) {
         print(i)
