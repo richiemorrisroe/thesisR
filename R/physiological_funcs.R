@@ -1,4 +1,4 @@
-##' .. content for \description{Import all physiological data files} (no empty lines) ..
+##' {Import all physiological data files}
 ##'
 ##' .. content for \details{} ..
 ##' @title fileImport
@@ -14,8 +14,7 @@ fileImport <- function(directory, pattern) {
   file.list
   ## file.df <- do.call(cbind, file.list)
 }
-##' .. content for \description{Convert a list (of physiological data files) to a dataframe} (no empty lines) ..
-##'
+##' {Convert a list (of physiological data files) to a dataframe}
 ##' .. content for \details{} ..
 ##' @title listToDf
 ##' @param data the datafile
@@ -40,7 +39,7 @@ p  }
   }
   res
 }
-##' .. content for \description{read in files and write them out again} (no empty lines) ..
+##' {read in files and write them out again} 
 ##'
 ##' .. content for \details{} ..
 ##' @title lazyload
@@ -60,7 +59,7 @@ lazyload <- function (files, names, cols) {
     write.table(gsr, file=outfilenames2[i])
   }
 }
-##' .. content for \description{Take a list of files, read them in and calculate the number of lines in each of them} (no empty lines) ..
+##' {Take a list of files, read them in and calculate the number of lines in each of them} 
 ##'
 ##' .. content for \details{} ..
 ##' @title lazyload
@@ -85,7 +84,7 @@ lazylength <- function(files) {
 }
 
 
-##' .. content for \description{Internal thesis function to get the participant number for use with lazylength} (no empty lines) ..
+##' {Internal thesis function to get the participant number for use with lazylength} 
 ##'
 ##' .. content for \details{} ..
 ##' @title getPPNo
@@ -99,7 +98,7 @@ getPPNo <- function(files) {
     pp <- gsub(".txt", "", x=pp)
     pp
 }
-##' .. content for \description{A better implementation of lazylength} (no empty lines) ..
+##' {A better implementation of lazylength} 
 ##'
 ##' .. content for \details{} ..
 ##' @title lazylength
@@ -119,7 +118,7 @@ lazylength <- function(files) {
     }
     lengthmat
 }
-##' .. content for \description{Calculate the overall mean by file for each file} (no empty lines) ..
+##' {Calculate the overall mean by file for each file} 
 ##'
 ##' .. content for \details{} ..
 ##' @title lazymean
@@ -139,7 +138,7 @@ lazymean <- function( path, pattern, ...) {
 }
     meanmat
 }
-##' .. content for \description{roll up a series of large files into simpler aggregates} (no empty lines) ..
+##' {roll up a series of large files into simpler aggregates} 
 ##'
 ##' .. content for \details{} ..
 ##' @title lazydownsample
@@ -171,7 +170,7 @@ lazydownsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
     mymat
 }
         
-##' .. content for \description{Calculate the range of a set of data} (no empty lines) ..
+##' {Calculate the range of a set of data} 
 ##'
 ##' .. content for \details{} ..
 ##' @title diffunc
@@ -184,7 +183,7 @@ difffunc <- function(data) {
   time <- abs(max-min)
   return(time)
 }
-##' .. content for \description{A function to interpolate lower sample data to match higher sample data - locf interpolation} (no empty lines) ..
+##' {A function to interpolate lower sample data to match higher sample data - locf interpolation} 
 ##'
 ##' .. content for \details{} ..
 ##' @title interpolate.pain
@@ -222,7 +221,7 @@ interpolate.pain <- function(pain, padding) {
         res.mat
     
     }
-##' .. content for \description{Another interpolation function} (no empty lines) ..
+##' {Another interpolation function} 
 ##' TODO: figure out which one of these is actually used
 ##' .. content for \details{} ..
 ##' @title interpolate2
