@@ -19,7 +19,7 @@ See the plot. Its a nice plot, right? I like the way that it seems different ite
 
 
 <<boxplot, echo=FALSE, fig=TRUE>>=
-print(ggplot2::ggplot(comm.melt, ggplot2::aes(x=variable, y=value))+ggplot2::geom_boxplot()+ggplot2::xlab("n_factors")+ggplot2::ylab("Communalities"))
+print(ggplot2::ggplot(comm.melt, ggplot2::aes(x=variable, y=value))+ggplot2::geom_boxplot()+ggplot2::xlab("n_factors")+ggplot2::ylab("Communalities")+ggplot2::theme(axis.text.x=ggplot2::element_text(angle=-90)))
 @ 
 
 The boxplot is also interesting. Note the sharp jump at 2, and the small drop after 5. Not a solution I spent much time with, but it has some support in the literature. 
