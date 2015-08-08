@@ -5,7 +5,7 @@
 ##' .. content for \description{} (no empty lines) ..
 ##' I'm pretty sure I never finished this function
 ##' .. content for \details{} ..
-##' @title MultFactorAnalysis
+##' @title mult_factor_analysis
 ##' @param data a dataframe with all numeric columns with no non-missing data
 ##' @param factors the number (or range) of factors to extract
 ##' @param meth a list containing all the methods of extractions to use, or "all" 
@@ -94,22 +94,22 @@ communality <- function(fs) {
 ##' .. content for \description{} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title GetLoadings
+##' @title get_loadings
 ##' @param mfa
 ##' @return a list containing the loadings of all mfa solutions in mfa
 ##' @author Richard Morrisroe
-getLoadings <- function (mfa) {
+get_loadings <- function (mfa) {
   ind <- lapply(mfa, ExtractLoadings)
   ind
 }
-##' .. content for \description{} (no empty lines) ..
+##' .. content for \description{This seems very similar to FactorAverage, rationalise these functions ASAP} (no empty lines) ..
 ##'
 ##' .. content for \details{} ..
-##' @title CombineLoadings
+##' @title combine_loadings
 ##' @param mfa a multi-factor object
 ##' @return a list of mean loadings averaged over all potential factor solutions
 ##' @author Richard Morrisroe
-combineLoadings <-  function (mfa) {
+combine_loadings <-  function (mfa) {
   loadlist <- list()
   for (i in seq_along(along.with=mfa)) {
     loadlist[[i]] <- mfa[[i]]$loadings
@@ -129,13 +129,13 @@ combineLoadings <-  function (mfa) {
 ##' .. content for \description{} (no empty lines) ..
 ##' Again, I don't think I actually finished this function
 ##' .. content for \details{} ..
-##' @title displayRot
+##' @title display_rot
 ##' @param mfa
 ##' @param method
 ##' @param rotreq
 ##' @return results, yo!
 ##' @author Richard Morrisroe
-displayRot <- function (mfa, method=NULL, rotreq=NULL) {
+display_rot <- function (mfa, method=NULL, rotreq=NULL) {
   rotationreq <- rotreq
   meth <- method
   resind <- grep(rotationreq, x=names(mfa))
