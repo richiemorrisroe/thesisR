@@ -127,10 +127,11 @@ svd_cv <- function(x, ...) {
 ##' @return a dataframe containing the summary statistics
 ##' @author Richie Morrisroe
 apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
+    ## stopifnot(require(reshape2), require(plyr))
     fun <- match.call(FUN)
     ## browser()
-    data.m <- melt(data)
-    data.tab <- ddply(data.m, .(variable), summarise, Mean=mean(value, na.rm=TRUE), SD=sd(value, na.rm=TRUE), Min=min(value, na.rm=TRUE), Max=max(value, na.rm=TRUE))
+    data.m <- reshape2::melt(data)
+    data.tab <- plyr::ddply(data.m, .(variable), summarise, Mean=mean(value, na.rm=TRUE), SD=sd(value, na.rm=TRUE), Min=min(value, na.rm=TRUE), Max=max(value, na.rm=TRUE))
     names(data.tab)[1] <- ""
     if(xtable==TRUE) {
         data.tab <- xtable(data.tab)
