@@ -99,7 +99,7 @@ fit_factor_rotations <- function(data, factors, meth, rotation, scores, ...) {
     fit_fa <- function(x) psych::fa(data, rotation=x)
     fac_rot <- lapply(rotations, function (x) fit_fa(x))
     names(fac_rot) <- rotations
-    class(fac_rot) <- c("factor_series", "fa")
+    class(fac_rot) <- c("factor_series", "psych")
     fac_rot
 }
     
