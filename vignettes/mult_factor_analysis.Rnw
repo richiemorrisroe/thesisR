@@ -3,7 +3,8 @@
 \begin{document}
 <<>>=
 require(thesisR)
-load("../data/healthoptmind.rda")
+data(healthoptmind)
+rand <- dat[,grep("RAND", x=names(dat))]
 rand.series <- fit_factor_series(rand, factors=1:12)
 comm.t <- communality(fs=rand.series)
 comm.df <- as.data.frame(comm.t)
