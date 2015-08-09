@@ -96,8 +96,8 @@ fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
 ##' @author Richard Morrisroe
 fit_factor_rotations <- function(data, factors, meth, rotation, scores, ...) {
     rotations <- list("none", "varimax", "quartimax", "bentlerT", "geominT","promax", "oblimin","simplimax", "bentlerQ", "geominQ", "biquartimin" )
-    fit_fa <- function(x) fa(data, rotation=x)
-    fac_rot <- lapply(rotations, fit_fa(x))
+    fit_fa <- function(x) psych::fa(data, rotation=x)
+    fac_rot <- lapply(rotations, function (x) fit_fa(x))
     names(fac_rot) <- rotations
     class(fac_rot) <- c("factor_series", "fa")
     fac_rot
@@ -161,18 +161,16 @@ combine_loadings <-  function (mfa) {
 
   lapply(loadings, function (x) Reduce("+", x))
 }
-##' .. content for \description{} (no empty lines) ..
-##' Again, I don't think I actually finished this function
-##' .. content for \details{} ..
+##' {Display a set of factor_series solutions}
+##' {}
 ##' @title display_rot
-##' @param mfa
-##' @param method
-##' @param rotreq
-##' @return results, yo!
+##' @param an object returned by fit_factor_rotations
+##' @return plots representing each solution
 ##' @author Richard Morrisroe
-display_rot <- function (mfa, method=NULL, rotreq=NULL) {
-  rotationreq <- rotreq
-  meth <- method
-  resind <- grep(rotationreq, x=names(mfa))
-  res <- mfa[[resind]]
+display_rot <- function (fs) {
+    ## browser()
+    fslength <- length(fs)
+    par(mfrow=c(3, 4))
+    invisible(lapply(fs, function (x) plot(x, main=names(x))))
+    
 }
