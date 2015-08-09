@@ -8,7 +8,7 @@
 ##' @author Richard Morrisroe
 factor_xtab <-  function (x, names=NULL, ...) {
     x.mat.df <- FactorCoeff(x, names=names)
-    fact.xtab <- xtable(x.mat.df, ...)
+    fact.xtab <- xtable::xtable(x.mat.df, ...)
     return(fact.xtab)
 }
 ##' {This function takes an fa object and extracts the coefficients from it} 
