@@ -1,1 +1,8 @@
 exportPattern("^[^\\.]")
+importFrom("reshape2", "cast", "melt")
+importFrom("plyr" "ddply")
+importFrom("xtable", "xtable")
+importFrom("ggplot2", "ggplot", "aes", "geom_point", "geom_rug")
+importFrom("ltm", "descript", "factor.scores", "gpcm", "grm")
+importFrom("glmnet", "glmnet", "cv.glmnet")
+importFrom("caret", "train", "confusionMatrix", "createDataPartition")
