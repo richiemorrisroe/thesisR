@@ -1,3 +1,4 @@
+requireNamespace("psych", quietly=TRUE)
 ## load("~/Code/thesisR/data/healthoptmind.rda")
 ## lotr <- dat[,with(dat, grep("LOTR", x=names(dat)))]
 ## rand <- dat[,with(dat, grep("RAND", x=names(dat)))]
@@ -54,6 +55,18 @@ mult_factor_analysis <- function (data, factors,
   class(res) <- "mfa"
   res
 }
+##' .. content for \description{Extract a range of factor solutions} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title fit_factor_series
+##' @param data a matrix of data, as per psych::fa()
+##' @param factors a range of factors to fit
+##' @param meth method of factor extraction to use
+##' @param rotation if null, will fit all available rotations
+##' @param scores type of factor scores to be returned
+##' @param ... other arguments passed through to 
+##' @return a factor_series object
+##' @author Richard Morrisroe
 fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
     fno <- factors
     if(length(fno) == 1) {
@@ -69,6 +82,27 @@ fit_factor_series <- function(data, factors, meth, rotation, scores, ...) {
     class(fnolist) <- c("factor_series", "fa")
     fnolist
 }
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title fit_factor_rotations
+##' @param data a matrix of data
+##' @param factors how many factors to extract
+##' @param meth method of factor extraction used
+##' @param rotation if NULL, all rotations are extracted
+##' @param scores which kind of factor scores to return
+##' @param ... further methods passed through to fa
+##' @return a factor_series object
+##' @author Richard Morrisroe
+fit_factor_rotations <- function(data, factors, meth, rotation, scores, ...) {
+    rotations <- list("none", "varimax", "quartimax", "bentlerT", "geominT","promax", "oblimin","simplimax", "bentlerQ", "geominQ", "biquartimin" )
+    fit_fa <- function(x) fa(data, rotation=x)
+    fac_rot <- lapply(rotations, fit_fa(x))
+    names(fac_rot) <- rotations
+    class(fac_rot) <- c("factor_series", "fa")
+    fac_rot
+}
+    
 get_component <- function(fs, component) {
     fac <- unlist(sapply(fs, `[`, "factors"))
     compdata <- sapply(fs, `[`, component)
