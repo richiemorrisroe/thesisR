@@ -7,7 +7,7 @@
 ##' @return xtable object of coefficients
 ##' @author Richard Morrisroe
 factor_xtab <-  function (x, names=NULL, ...) {
-    x.mat.df <- FactorCoeff(x, names=names)
+    x.mat.df <- factor_coeff(x, names=names)
     fact.xtab <- xtable::xtable(x.mat.df, ...)
     return(fact.xtab)
 }
