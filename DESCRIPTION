@@ -12,3 +12,4 @@ Imports:
     GPArotation
 License: GPL-3
 LazyData: true
+Suggests: testthat
