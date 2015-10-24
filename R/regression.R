@@ -60,3 +60,11 @@ tune_loess <- function(formula, data, newdata, tune_length, ...) {
           }
     fitlist
 }
+##refactor this to make it more general
+placglm <- function (data, indices) {
+    d <- data[indices,]
+    mod <- glm(PlacResp~TCQIATMean*LOTR+Age+OptIATMean+Rei,
+               data=d, family=binomial(link="logit"))
+    return(
+        summary(mod)$coefficients[,4])
+}
