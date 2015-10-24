@@ -1,47 +1,47 @@
 ##' {Takes an fa object, extracts the coefficients, and returns an xtable object of these coefficients (including communalities)}
 ##'
 ##' {Returns a table suitable for research. (Probably) doesn't meet APA, or indeed any, standards. Thin wrapper around FactorCoeff}
-##' @title factor_xtab 
+##' @title factor_xtab
 ##' @param x an object of class "psych" "fa"
 ##' @param ...  further arguments passed to the FactorCoeff method
 ##' @return xtable object of coefficients
 ##' @author Richard Morrisroe
 factor_xtab <-  function (x, names=NULL, ...) {
-    x.mat.df <- factor_coeff(x, names=names)
-    fact.xtab <- xtable::xtable(x.mat.df, ...)
+    xmatdf <- factor_coeff(x, names=names)
+    fact.xtab <- xtable::xtable(xmatdf, ...)
     return(fact.xtab)
 }
-##' {This function takes an fa object and extracts the coefficients from it} 
-##'  {Extracts the loadings and communalities separately and cbinds them} 
+##' {This function takes an fa object and extracts the coefficients from it}
+##'  {Extracts the loadings and communalities separately and cbinds them}
 ##' @title factor_coeff
-##' @param x 
-##' @param names 
+##' @param x
+##' @param names
 ##' @return a dataframe suitable for passing to xtable
 ##' @author Richie Morrisroe
 factor_coeff <- function (x, names=NULL) {
-   x.load<-x$loadings
-    x.comm<-x$communality
-    x.names <- colnames(x.load)
-    len <- length(colnames(x.load))
-   
-    x.comm.load<-cbind(x.load, x.comm)
+   xload<-x$loadings
+    xcomm<-x$communality
+    xnames <- colnames(xload)
+    len <- length(colnames(xload))
 
-   x.mat.df<-as.matrix.data.frame(x.comm.load)
+    xcommload<-cbind(xload, xcomm)
+
+   xmatdf<-as.matrix.data.frame(xcommload)
    if(!is.null(names)) {
        names2 <- c(names, "Communalites")
-       colnames(x.mat.df) <- names2
+       colnames(xmatdf) <- names2
    }
    else {
-       x.names[len+1] <- "Communalities"
-       colnames(x.mat.df) <- x.names
+       xnames[len + 1] <- "Communalities"
+       colnames(xmatdf) <- xnames
 
    }
-   return(x.mat.df)
+   return(xmatdf)
 }
 ##' {Extracts the correlations of factors from an fa object}
 ##' {gets the estimated factor correlations. Only really useful with oblique rotations}
 ##' @title factor_cor
-##' @param x 
+##' @param x
 ##' @param ... Further arguments passed to the xtable method
 ##' @return an xtable object containing the between-factor correlations
 ##' @author Richard Morrisroe
@@ -51,10 +51,11 @@ factor_cor <- function (x, ...) {
   factnames <- colnames(x$loadings)
   res <- as.data.frame(res)
   #names(res) <- factnames
-  res.x <- xtable(res, ...)
+  resx <- xtable::xtable(res, ...)
+  resx
 }
 ##'  {This function returns a list of factor names (taken from the FA object) and the items which have an absolute correlation of greater than loadings}
-##' {Its not really that complicated, and honestly should be implemented generically}
+##' {Its not really that complicated, and honestly should be implemented generically. This could prove useful for doing CV across multiple settings, if it returned the indices as well as the names}
 ##' @title extract_loadings
 ##' @param x an fa object
 ##' @param loadings the cutoff point for reporting an association
@@ -62,9 +63,12 @@ factor_cor <- function (x, ...) {
 ##' @author Richard Morrisroe
 extract_loadings <- function (x, loadings=0.3) {
     stopifnot(class(x)==c("psych", "fa"))
-  x.load <- x$loadings
-  x.uc.mat <- as.data.frame(unclass(x.load))
-  xitemsload <- apply(x.uc.mat, 2, function (y) names(y[which(abs(y)>=loadings)])) #return the names of items which have appreciable loadings
+  xload <- x$loadings
+  xucmat <- as.data.frame(unclass(xload))
+    xitemsload <- apply(xucmat, 2,
+                        function (y)
+                        names(y[which(abs(y) >=
+                                      loadings)])) #return the names of items which have appreciable loadings
   xitemsload
 }
 ##' {Takes a psych fa object, and extracts the communalities and uniquenesses}
@@ -76,7 +80,7 @@ extract_loadings <- function (x, loadings=0.3) {
 extract_h2u2 <- function (x) {
   x.comm <- x$communality
   x.uniq <- x$uniquenesses
-  x.ratio <- x.comm/x.uniq
+  x.ratio <- x.comm / x.uniq
   x.h2u2 <- as.data.frame(cbind(x.comm, x.uniq, x.ratio))
   x.h2u2
  }
@@ -94,16 +98,18 @@ fit_indices <- function (x, labels=NULL) {
   rmsnames <- attr(x$RMSEA, "names")
   res <- as.data.frame(cbind(tli, bic, rmsea[1], rmsea[2], rmsea[3]))
   print(length(res))
-  colnames(res) <- c(paste(substitute(x),"TLI", sep=""),paste(substitute(x),"BIC", sep=""),
-                     paste(substitute(x),"RMSEA", sep=""),
-                     paste(substitute(x),"-90CInt", sep=""),
-                     paste(substitute(x),"+90CInt", sep=""))
+  colnames(res) <- c(
+      paste(substitute(x),"TLI", sep=""),
+      paste(substitute(x),"BIC", sep=""),
+      paste(substitute(x),"RMSEA", sep=""),
+      paste(substitute(x),"-90CInt", sep=""),
+      paste(substitute(x),"+90CInt", sep=""))
   res
 }
 ##' {Performs a SVD based CV metric used in chemometrics}
 ##' {Find reference for this - need to check external hard drive as no longer have academic access :( Appears to depend on some weird-ass package and takes an object of which I don't know the class, so this needs to be fixed}
 ##' @title svd_cv
-##' @param x 
+##' @param x
 ##' @param ... further arguments passed to xtable (these should be removed)
 ##' @return an xtable object containing the SVD rank, prediction error and SD of prediction error
 ##' @author Richie Morrisroe
@@ -112,10 +118,11 @@ svd_cv <- function(x, ...) {
     K <- nrow(msep)
     rank <- seq(from = 0, to = x$maxrank, by = 1)
     msep.mean <- apply(x$msep, 2, mean)
-    msep.se <- apply(x$msep, 2, sd)/sqrt(K)
+    msep.se <- apply(x$msep, 2, sd) / sqrt(K)
     res <- as.data.frame(cbind(rank, msep.mean, msep.se))
     names(res) <- c("Rank", "Prediction Error", "Prediction Error SE")
-    resxtab <- xtable(res, ...)
+    resxtab <- xtable::xtable(res, ...)
+    resxtab
 }
 ##' {Return the mean, SD, min and max of a set of variables stored in a dataframe}
 ##'{return an APA standard mean, se, min and max table for summary statistics}
@@ -129,12 +136,17 @@ svd_cv <- function(x, ...) {
 apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
     ## stopifnot(require(reshape2), require(plyr))
     fun <- match.call(FUN)
-    ## browser()
     data.m <- reshape2::melt(data)
-    data.tab <- plyr::ddply(data.m, .(variable), summarise, Mean=mean(value, na.rm=TRUE), SD=sd(value, na.rm=TRUE), Min=min(value, na.rm=TRUE), Max=max(value, na.rm=TRUE))
+    data.tab <- plyr::ddply(data.m,
+                            .(variable),
+                            summarise,
+                            Mean=mean(value, na.rm=TRUE),
+                            SD=sd(value, na.rm=TRUE),
+                            Min=min(value, na.rm=TRUE),
+                            Max=max(value, na.rm=TRUE))
     names(data.tab)[1] <- ""
-    if(xtable==TRUE) {
-        data.tab <- xtable(data.tab)
+    if(xtable == TRUE) {
+        data.tab <- xtable::xtable(data.tab)
     }
     return(data.tab)
 }
@@ -147,20 +159,20 @@ apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
 ##' @param .... other arguments passed to fun
 ##' @return a matrix containing the averaged fa solutions
 ##' @author Richie Morrisroe
-factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ....) {
+factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ...) {
 
-    sols.coeff.list <- list()
-    
+    sols_coeff_list <- list()
+
     for(i in 1:length(sols)) {
         coeff <- as.data.frame(factor_coeff(sols[[i]]))
-        coeff.ord <- coeff[,mynames]
-        sols.coeff.list[[i]] <- coeff.ord
+        coeff_ord <- coeff[,mynames]
+        sols_coeff_list[[i]] <- coeff_ord
         ## browser()
     }
-    sols.coeff.list
-    sols.list <- lapply(sols.coeff.list, as.matrix)
+    sols_coeff_list
+    sols_list <- lapply(sols_coeff_list, as.matrix)
 
-    resmat <- apply(simplify2array(sols.list), c(1,2), FUN)
+    resmat <- apply(simplify2array(sols_list), c(1,2), FUN)
     return(resmat)
 }
 ##' {Give meaningful names to an fa solution}
@@ -172,11 +184,10 @@ factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ....) {
 ##' @author Richie Morrisroe
 factor_names <- function(fac, names=NULL) {
     if(is.null(names)) {
-        stop("Calling a function based on factor names with no names seems like a bad idea, don't you think?")
+        stop(
+            "Calling a function based on factor names
+with no names seems like a bad idea, don't you think?")
     }
-    
     colnames(fac$loadings) <- names
     return(fac)
 }
-
-
