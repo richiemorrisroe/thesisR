@@ -32,8 +32,8 @@ for (i in seq(from=1, to=length(data))) {
   res[1:nrow(temp),i] <- temp[,ind]
 }
   if(ind==1) {
-    colnames(res) <- paste("GSR", dnames, sep="")
-p  }
+      colnames(res) <- paste("GSR", dnames, sep="")
+  }
   if(ind==2) {
     colnames(res) <- paste("ECG", dnames, sep="")
   }
@@ -106,8 +106,7 @@ get_participant_number <- function(files) {
 ##' @return a file identifier and the nrow() of each file 
 ##' @author Richie Morrisroe
 lazy_length <- function(files) {
-    pp <- getPPNo(files)
-    ## browser()
+    pp <- get_participant_number(files)
     lengthmat <- matrix(NA, 114, ncol=2)
     for (i in 1:length(files)) {
         temp <- read.table(files[i])
