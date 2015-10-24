@@ -167,7 +167,6 @@ factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ...) {
         coeff <- as.data.frame(factor_coeff(sols[[i]]))
         coeff_ord <- coeff[,mynames]
         sols_coeff_list[[i]] <- coeff_ord
-        ## browser()
     }
     sols_coeff_list
     sols_list <- lapply(sols_coeff_list, as.matrix)

@@ -9,17 +9,15 @@
 ##' @return a dataframe containing the mean response times for each of the critical blocks (3 and 5) and the IAT score calculated by the specified method
 ##' @author Richard Morrisroe
 calc_iat_scores <- function(data, Code, method=c("mean", "median"), words) {
-  if(nrow(data)%% 5 !=0) {
+  if(nrow(data) %% 5 !=0) {
     warning("not all participants have complete responses")
-
+##good old magic function arguments
   partlen <- with(data, tapply(Block, Code,length))
-    
-  droppart <- partlen[partlen!=5]
-  drop <- which(data$Code==names(droppart))
-  data <- data[-(drop),]
+  droppart <- partlen[partlen != 5]
+  drop <- which(data$Code == names(droppart))
+  data <- data[- (drop),]
   }
-  if(method=="mean") {
-    
+  if(method == "mean") {
     func <- method[1]
   }
   else {
@@ -27,19 +25,11 @@ calc_iat_scores <- function(data, Code, method=c("mean", "median"), words) {
   }
 
   data2 <- data[,c(Code, words)]
-  
-  block3 <- data2[data$Block=="Block 3",]
-  block5 <- data2[data$Block=="Block 5",]
-  block1 <- data2[data$Block=="Block 1",]
-  block2 <- data2[data$Block=="Block 2",]
-  block4 <- data2[data$Block=="Block 4",]
-  ## b3.corr <- block3$Correct
-  ## b5.corr <- block5$Correct
-  ## b1.corr <- block1$Correct
-  ## b2.corr <- block2$Correct
-  ## b4.corr <- block4$Correct
-  ## block3 <- block3[,-(length(block3))]
-  ## block5 <- block5[,-(length(block5))]
+  block3 <- data2[data$Block == "Block 3",]
+  block5 <- data2[data$Block == "Block 5",]
+  block1 <- data2[data$Block == "Block 1",]
+  block2 <- data2[data$Block == "Block 2",]
+  block4 <- data2[data$Block == "Block 4",]
   stimblock3 <- block3[,words]
   stand.dev3 <- apply(stimblock3[,words], 1, sd, na.rm=TRUE)
   stimblock5 <- block5[,words]
@@ -55,12 +45,13 @@ calc_iat_scores <- function(data, Code, method=c("mean", "median"), words) {
   block3scores <- as.data.frame(cbind(b3score, stand.dev3))
   block5scores <- as.data.frame(cbind(b5score, stand.dev5))
   scores <-  cbind(block3[,Code],block3scores, block5scores)
-  overallsd <-  (stand.dev3+stand.dev5)/2
-  diff <-  b5score-b3score
-iatscore <-  diff/overallsd
-## browser()
-res <- data.frame(scores=scores, IAT=iatscore, Block3=stimblock3, Block5=stimblock5 ## Block1Correct=b1.corr,Block2Correct=b2.corr,Block4Correct=b4.corr,Block3Correc
-                  ## t=b3.corr, Block5Correct=b5.corr
+  overallsd <-  (stand.dev3 + stand.dev5)/2
+  diff <-  b5score - b3score
+iatscore <-  diff / overallsd
+  res <- data.frame(scores=scores,
+                    IAT=iatscore,
+                    Block3=stimblock3,
+                    Block5=stimblock5
                   )
 }
 ##' {Get the difference between two sets of IAT scores}
@@ -75,11 +66,11 @@ iat_diff <- function(x, y) {
   res <- matrix(NA, ncol=length(x), nrow=nrow(x))
   for (i in 1:length(x)) {
     print(i)
-    ## browser()
     res[,i] <- mapply("-", x[,i], y[,i])
-    res}
+    res
+}
   stimnames <- names(x)
   stimnames2 <- paste(stimnames, ".Diff", sep="")
   names(res) <- stimnames2
-  res}
-
+  res
+}
