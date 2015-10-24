@@ -8,7 +8,7 @@
 ##' @author Richie Morrisroe
 file_import <- function(directory, pattern) {
   files <- list.files(directory, pattern=pattern, full.names=TRUE)
-  file.list <- lapply(files, read.table, header=FALSE)
+  file_list <- lapply(files, read.table, header=FALSE)
   files2 <- gsub(".*-.*-([0-9][0-9][0-9][0-9][0-9]?).txt", "\\1", x=files)
   names(file.list) <- files2
   file.list
@@ -31,10 +31,10 @@ for (i in seq(from=1, to=length(data))) {
   temp <- data[[i]]
   res[1:nrow(temp),i] <- temp[,ind]
 }
-  if(ind==1) {
+  if(ind == 1) {
       colnames(res) <- paste("GSR", dnames, sep="")
   }
-  if(ind==2) {
+  if(ind == 2) {
     colnames(res) <- paste("ECG", dnames, sep="")
   }
   res
@@ -71,7 +71,6 @@ lazy_length <- function(files) {
     tp.split <- strsplit(as.character(tp), "-")
     pp <- lapply(tp.split, "[", 3)
     pp <- gsub(".txt", "", x=pp)
-    ## browser()
     lengthmat <- matrix(NA, 114, ncol=2)
     for (i in 1:length(files)) {
         temp <- read.table(files[i])
@@ -128,7 +127,7 @@ lazy_length <- function(files) {
 ##' @author Richie Morrisroe
 lazy_mean <- function( path, pattern, ...) {
     lsfiles <- list.files(path, pattern, ...)
-    pp <- getPPNo(lsfiles)
+    pp <- get_participant_number(lsfiles)
     meanmat <- matrix(NA, length(lsfiles), ncol=2)
     for(i in 1:length(lsfiles)) {
         temp <- read.table(lsfiles[i])
@@ -151,7 +150,7 @@ lazy_mean <- function( path, pattern, ...) {
 lazy_downsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
   stopifnot(is.numeric(aggregate))
     lsfiles <- list.files(path, pattern, full.names=TRUE)
-    pp <- getPPNo(lsfiles)
+    pp <- get_participant_number(lsfiles)
     mymat <- matrix(NA, 3200, ncol=length(lsfiles))
     for(i in 1:length(lsfiles)) {
 
@@ -190,34 +189,31 @@ diff_func <- function(data) {
 ##' @param padding the offsets at which to start the interpolation
 ##' @return A dataframe containing the interpolated data
 ##' @author Richie Morrisroe
-interpolate.pain <- function(pain, padding) {
+interpolate_pain <- function(pain, padding) {
     max.padding <- with(padding, max(FirstPainRating, na.rm=TRUE))
     pain.sec <- 45*60 #hack, as the experiment was 45 mins max following pain induction
-    max.len <- pain.sec+max.padding+1 #for participant column
-    row.nums <- with(pain, length(unique(Participant)))
-    res.mat <- matrix(NA, nrow=row.nums, ncol=max.len)
-    pain.merge <- merge(pain, padding, by.y="PPNo.", by.x="Participant")
+    max_len <- pain_sec+max_padding+1 #for participant column
+    row_nums <- with(pain, length(unique(Participant)))
+    res_mat <- matrix(NA, nrow=row_nums, ncol=max_len)
+    pain_merge <- merge(pain, padding, by.y="PPNo.", by.x="Participant")
     partno <- with(padding, PPNo.)
-    part.pain.sec <- apply(pain[,with(pain,
+    part_pain_sec <- apply(pain[,with(pain,
                                       grep("^X", x=names(pain)))],
                            c(1,2), function (x) rep(x, times=60))
-    
     for(i in seq_along(partno)) {
         print(partno[i])
         nowpart <- partno[i]
-        ## browser()
         len.part <- padding[with(padding, PPNo.==nowpart),]
         start.time <- len.part[,3]
         if(is.na(start.time)) {
-            next}
+            next
+        }
         mypadding <- vector(mode="numeric", length=start.time)
-        full.dat <- c(mypadding, part.pain.sec[,i,])
-        ## browser()
-        res.mat[i,1:length(full.dat)+1] <- full.dat
-        res.mat
-        ## browser()
+        full_dat <- c(mypadding, part_pain_sec[,i,])
+        res_mat[i,1:length(full_dat) + 1] <- full_dat
+        res_mat
     }
-        res.mat
+        res_mat
     
     }
 ##' {Another interpolation function} 
@@ -229,27 +225,27 @@ interpolate.pain <- function(pain, padding) {
 ##' @return interpolations
 ##' @author Richie Morrisroe
 interpolate2 <- function(painscores, painmetadata) {
-    pain.ratings.min <- with(painmetadata, floor((SqueezStop+60)/60))
-    pain.ratings.min <- as.data.frame(pain.ratings.min)
-    pain.ratings.min[,"Participant"] <- painmetadata$PPNo.
-    names(pain.ratings.min)[1] <- "padding"
-    resmat <- matrix(0, nrow=nrow(pain.ratings.min), ncol=45+with(pain.ratings.min, max(padding, na.rm=TRUE)))
-    partno <- pain.ratings.min$Participant
-    painscores.real <- grep("^X", x=names(painscores))
+    pain_ratings_min <- with(painmetadata, floor((SqueezStop+60)/60))
+    pain_ratings_min <- as.data.frame(pain_ratings_min)
+    pain_ratings_min[,"Participant"] <- painmetadata$PPNo.
+    names(pain_ratings_min)[1] <- "padding"
+    resmat <- matrix(0, nrow=nrow(pain_ratings_min), ncol=45+with(pain_ratings_min, max(padding, na_rm=TRUE)))
+    partno <- pain_ratings_min$Participant
+    painscores_real <- grep("^X", x=names(painscores))
     for (i in seq_along(partno)) {
         print(i)
-        partpad <- pain.ratings.min[with(pain.ratings.min,Participant==partno[i]),1]
-        if(is.na(partpad)) {
+        partpad <- pain_ratings_min[with(pain_ratings_min,Participant==partno[i]),1]
+        if(is_na(partpad)) {
             next}
         
-        painratings <- as.numeric(painscores[with(painscores, Participant==partno[i]),painscores.real])
-        if(i==27) {
-        ## browser()
+        painratings <- as.numeric(painscores[with(painscores, Participant==partno[i]),painscores_real])
+        if(i== 27 ) {
+            ##something weird happens, obviously:)
         }
         padding <- rep(0, times=partpad)
         padpluspain <- c(padding, painratings)
-        
         resmat[i,1:length(padpluspain)] <- padpluspain
-        resmat}
+        resmat
+    }
     resmat
 }

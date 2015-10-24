@@ -1,7 +1,3 @@
-## load("~/Code/thesisR/data/healthoptmind.rda")
-## lotr <- dat[,with(dat, grep("LOTR", x=names(dat)))]
-## rand <- dat[,with(dat, grep("RAND", x=names(dat)))]
-## maas <- dat[,with(dat, grep("MAAS", x=names(dat)))]
 ##' .. content for \description{} (no empty lines) ..
 ##' I'm pretty sure I never finished this function
 ##' .. content for \details{} ..
@@ -14,8 +10,10 @@
 ##' @return an object of class mfa, containing all of the relevant information
 ##' @author Richard Morrisroe
 mult_factor_analysis <- function (data, factors,
-                                  meth=list("minres", "wls", "gls", "pa", "ml"),
-                                  rotation=list("none", "varimax", "quartimax", "bentlerT", "geominT","promax", "oblimin","simplimax", "bentlerQ", "geominQ", "biquartimin" ),
+                                  meth=
+                                  list("minres", "wls", "gls", "pa", "ml"),
+                                  rotation=
+                                  list("none", "varimax", "quartimax", "bentlerT", "geominT","promax", "oblimin","simplimax", "bentlerQ", "geominQ", "biquartimin" ),
                                   scores=list("regression", "Thurstone", "Anderson", "Bartlett", "tenBerge")) {
   orthrotations <- c("none", "varimax", "quartimax", "bentlerT", "geominT" )
   obliquerotations <- c("promax", "oblimin",
@@ -100,12 +98,12 @@ communality <- function(fs) {
 ##' @return a list containing the loadings of all mfa solutions in mfa
 ##' @author Richard Morrisroe
 get_loadings <- function (mfa) {
-  ind <- lapply(mfa, ExtractLoadings)
+  ind <- lapply(mfa, extract_loadings)
   ind
 }
 ##' .. content for \description{This seems very similar to FactorAverage, rationalise these functions ASAP} (no empty lines) ..
 ##'
-##' .. content for \details{} ..
+##' .. {} ..
 ##' @title combine_loadings
 ##' @param mfa a multi-factor object
 ##' @return a list of mean loadings averaged over all potential factor solutions
@@ -122,7 +120,7 @@ combine_loadings <-  function (mfa) {
 
 
     loadings[[j]] <- as.matrix(unclass(loadlist[[j]]))
-  }
+}
   loadings
 
   lapply(loadings, function (x) Reduce("+", x))
