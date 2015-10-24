@@ -13,14 +13,20 @@
 ##' @return either a vector of predictions or the coefficients of the new model (as a sparse matrix)
 ##' @author Richie Morrisroe
 
-penalised_regression <- function(x, y,  testdata, newy, alpha, nfolds=10,type=c("coefficients", "response"), family="gaussian") {
+penalised_regression <- function(x, y,
+                                 testdata,
+                                 newy,
+                                 alpha,
+                                 nfolds=10,
+                                 type=c("coefficients", "response"),
+                                 family="gaussian") {
   x.mat <- as.matrix(x)
   testdata.mat <- as.matrix(testdata)
   ## browser()
-  cvres <- cv.glmnet(x=x.mat, y=y, nfolds=nfolds, family=family)
-  mod <- glmnet(x=x.mat, y=y, alpha=alpha, family=family)
-  pred.coef <- predict(mod, testdata.mat, s=cvres$lambda.min, type=type)
-  if(type=="response") {
+  cvres <- glmnet::cv.glmnet(x=x.mat, y=y, nfolds=nfolds, family=family)
+  mod <- glmnet::glmnet(x=x.mat, y=y, alpha=alpha, family=family)
+  pred.coef <- glmnet::predict(mod, testdata.mat, s=cvres$lambda.min, type=type)
+  if(type == "response") {
   pred <- data.frame(pred=as.vector(pred.coef), obs=newy)
   return(pred)
 }
@@ -39,16 +45,17 @@ penalised_regression <- function(x, y,  testdata, newy, alpha, nfolds=10,type=c(
 ##' @param ... arguments passed through to loess
 ##' @return not much, currently
 ##' @author Richie Morrisroe
-tuneLoess <- function(formula, data, newdata, tuneLength, ...) {
+tune_loess <- function(formula, data, newdata, tune_length, ...) {
   formula <- as.formula(formula)
-  seq <- seq(0, 1, by=tuneLength)
+  seq <- seq(0, 1, by=tune_length)
   part <- list(length=length(seq))
-  part.index <- createDataPartition(formula[2], p=0.8, times=length(seq))
+  part.index <- caret::createDataPartition(
+      formula[2], p=0.8, times=length(seq))
   for (i in seq_along(part.index)) {
     part[[i]] <- data[part.index,]
   }
   fitlist <- vector(mode="list", length=length(seq))
-  for (j in seq_along(tuneLength)) {
+  for (j in seq_along(tune_length)) {
     fitlist[[j]] <- loess(formula, data=part[[j]], span=seq[i])
           }
     fitlist
