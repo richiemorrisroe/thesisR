@@ -6,14 +6,14 @@
 ##' @return an xtable representation of the difficulty and/or discrimination parameters
 ##' @author Richard Morrisroe
 irt_xtab <- function (x, ...) {
-    eta<-x$etapar #$
-    se<-x$se.eta #$
-    eta.mat<-as.matrix(eta)
-    se.eta.mat<-as.matrix(se)
-    eta.par.mat<-cbind(eta.mat, se.eta.mat)
-    colnames(eta.par.mat) <- c("Ability Estimate", "Standard Error")
-    coef.xtab<-xtable(eta.par.mat, ...)
-    coef.xtab
+    eta <- x$etapar #$
+    se <- x$se.eta #$
+    eta_mat <- as.matrix(eta)
+    se_eta_mat <- as.matrix(se)
+    eta_par_mat <- cbind(eta_mat, se_eta_mat)
+    colnames(eta_par_mat) <- c("Ability Estimate", "Standard Error")
+    coef_xtab <- xtable::xtable(eta_par_mat, ...)
+    coef_xtab
 }
 ##' {Wrapper around ggplot for a person-item difficulty plot}
 ##' {Not much, really}
@@ -23,22 +23,28 @@ irt_xtab <- function (x, ...) {
 ##' @return a ggplot object
 ##' @author Richard Morrisroe
 ggplot_grm <- function (grm, ...) {
+    stopifnot(class(grm) == "grm")
     x <- coef(grm)
     x <- as.matrix(x)
     x <- x[,-ncol(x)]
-    x.t <- t(x)
-    response <- 1:nrow(x.t)
-    respind <- ncol(x.t)+1
-    x.t <- as.data.frame(x.t)
-    x.t$response <- response
-    x.tm <- melt(x.t, id="response")
-    names(x.tm) <- c("threshold", "item", "ability")
-    plot1 <- ggplot(x.tm, aes(x=ability, y=item, shape=as.factor(threshold), colour=as.factor(threshold)), ...)
-    plot2 <- plot1+geom_point()+geom_rug()
+    xt <- t(x)
+    response <- 1:nrow(xt)
+    respind <- ncol(xt)+1
+    xt <- as.data.frame(xt)
+    xt$response <- response
+    xtm <- reshape2::melt(xt, id="response")
+    names(xtm) <- c("threshold", "item", "ability")
+    plot1 <- ggplot2::ggplot(x.tm,
+                             aes(x=ability,
+                                 y=item,
+                                 shape=as.factor(threshold),
+                                 colour=as.factor(threshold)), ...)
+    plot2 <- plot1 + ggplot2::geom_point() + ggplot2::geom_rug()
     plot2
 }
 ##' {Convert a GPCM object to a matrix for turning into a table} 
-##' {In some cases, the output of a gpcm will have a different number of threshold parameters for different items. This function extracts the coefficients from an object of class gpcm, and solves this problem so that the coefficients can be coerced to a data.frame or matrix and the tables reported easily}
+##' {In some cases, the output of a gpcm will have a different number of threshold parameters for different items.
+##' This function extracts the coefficients from an object of class gpcm, and solves this problem so that the coefficients can be coerced to a data.frame or matrix and the tables reported easily}
 ##' @title coef2mat
 ##' @param gpcm a gpcm object (not relevant for GRM)
 ##' @return a matrix containing the estimated parameters from the gpcm model
@@ -53,28 +59,30 @@ coef2mat <- function (gpcm) {
         probelem <- which.min(as.matrix(unlist(len)))
         dimcols <- max(as.matrix(unlist(len)))
         dimrows <- length(names(gpcm))
-        mat.res <- matrix(NA, nrow=dimrows, ncol=dimcols)
+        mat_res <- matrix(NA, nrow=dimrows, ncol=dimcols)
         modlength <- lapply(gpcm, length)
         maxlength <- max(as.matrix(unlist(modlength)))
         for (i in 1:maxlength) {
             column <- lapply(gpcm, "[", i)
             column <- as.matrix(unlist(column))
-            mat.res[1:length(column),i] <- column
-            mat.res
+            mat_res[1:length(column),i] <- column
+            mat_res
         }
-        rownames(mat.res) <- names(gpcm)
+        rownames(mat_res) <- names(gpcm)
         probelemlength <- length(gpcm[[probelem]])
-        missingvalue <- which(is.na(mat.res)) #this gives a scalar, as internally matrices are stored as vectors
-        wrongvalue <- missingvalue-nrow(mat.res) #get the element where is the discrimination parameter has ended up
-        mat.res[missingvalue] <- mat.res[wrongvalue]
-        mat.res[wrongvalue] <- NA
+        ##this gives a scalar, as internally matrices are stored as vectors
+        missingvalue <- which(is.na(mat.res))
+        #get the element where is the discrimination parameter has ended up
+        wrongvalue <- missingvalue - nrow(mat.res) 
+        mat_res[missingvalue] <- mat_res[wrongvalue]
+        mat_res[wrongvalue] <- NA
 
         categories <- lapply(gpcm, names)
         categorynames <- categories[[which.max(sapply(categories, length))]]
-        colnames(mat.res) <- categorynames
-        return(mat.res)
+        colnames(mat_res) <- categorynames
+        return(mat_res)
     }
-    mat.res
+    mat_res
 }
 ##' Extract the predictions from an IRT fascore object
 ##'
@@ -96,11 +104,12 @@ get_irt_preds <- function (x) {
 ##' @return a list containing the (Pearson) correlations between the two z-scores, and the squared differences between the two sets of scores
 ##' @author Richie Morrisroe
 compare_irt_scores <- function (x, y) {
-    scores.x <- x$z1
-    scores.y <- y$z1
-    cor.xy <- cor(scores.x, scores.y, method="pearson", use="pairwise.complete.obs")
-    diff.xy <- (scores.x-scores.y)^2
-    res <- list(cor=cor.xy, differences=diff.xy)
+    scores_x <- x$z1
+    scores_y <- y$z1
+    cor_xy <- cor(scores_x, scores_y,
+                  method="pearson", use="pairwise.complete.obs")
+    diff_xy <- (scores_x - scores_y) ^ 2
+    res <- list(cor=cor_xy, differences=diff_xy)
     res
 }
 ##' .. Unfinished function used to perform cross-validation over IRT models
@@ -114,13 +123,17 @@ compare_irt_scores <- function (x, y) {
 ##' @param .... 
 ##' @return a test and train set
 ##' @author Richie Morrisroe
-irt_cv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "rasch", "1PL", "gpcm"), splits=10, ....) {
+irt_cv <- function (data,
+                    model=c("grm", "gpcm"),
+                    constraint = c(TRUE, FALSE, "rasch", "1PL", "gpcm"),
+                    splits = 10, ...) {
     if(is.dataframe(data) ||is.matrix(data))
         stop("this function needs matrix or dataframe input")
-    splittedsamples <- splitSample(data, splits)
+    splittedsamples <- split_sample(data, splits)
     for (i in 1:length(splittedsamples)) {
         testset <- splittedsamples[i]
         trainset <- splittedsamples[!i]
+        return(list(train=trainset, test=testset))
     }
 }
 ##' Yet another unsuccessful IRT CV function (look at this one, there were good ideas in there)
@@ -130,14 +143,13 @@ irt_cv <- function (data, model=c("grm", "gpcm"), constraint=c(TRUE, FALSE, "ras
 ##' @param x 
 ##' @return a dataframe containing observed and expected scores
 ##' @author Richie Morrisroe
-irt_cross_validate<- function(x) {
-
-                                        #get observed frequencies from display command in package ltm
-    obs <- descript(x)$perc
-    totscores <- descript(x)$items
-    totscores[totscores==0] <- NA
-    model <- grm(x)
-    model.scores <- factor.scores(model, resp.patterns=x)
+irt_cross_validate <- function(x) {
+#get observed frequencies from display command in package ltm
+    obs <- ltm::descript(x)$perc
+    totscores <- grm::descript(x)$items
+    totscores[totscores == 0] <- NA
+    model <- ltm::grm(x)
+    model.scores <- ltm::factor.scores(model, resp.patterns=x)
     abilities <- model.scores$score.dat["z1"]
     pointsweights <- model$GH
     cutpoints <- pointsweights[[1]]
@@ -145,25 +157,16 @@ irt_cross_validate<- function(x) {
     q <- seq(from=0, to=1, by=0.05) #create 21 points
     quadnorm <- qnorm(q) # map 21 points to the normal quantiles
     totscores2 <- rowSums(x, na.rm=TRUE)
-    totscores2[totscores2==0] <- NA
+    totscores2[totscores2 == 0] <- NA
     ab.scores <- as.matrix(cbind(totscores2, abilities))
-    res <- list(obsscores=obs, totscores=totscores2, abscores=ab.scores, model=model, scores=model.scores, abilities=abilities, weights=weights)
+    res <- list(obsscores=obs,
+                totscores=totscores2,
+                abscores=ab.scores,
+                model=model,
+                scores=model.scores,
+                abilities=abilities,
+                weights=weights)
 }
-## getscores <- function(x) { #this function appears to be completely pointless, in fact it may also have been causing my problems with the function below.
-##   reslist <- list()
-##   x <- as.data.frame(x)
-##   probmat <- matrix(NA, nrow=100, ncol=30)
-##   uniquescores <- unique(x[,1])
-##   unique.sorted <- sort(uniquescores)
-##   for(i in seq_along(unique.sorted)) {
-##     scoremat <- x[x$totscores2==unique.sorted[i],]
-##     uniqueabs <- unique(scoremat[,2])
-##     rep1 <- uniqueabs
-##     reslist[[i]] <- rep1
-##     names(reslist[[i]]) <- paste("score", unique.sorted[i], sep="")
-##   }
-##   reslist
-## }
 ##' Calculate  something, depending on some other stuff
 ##' {See description}
 ##' @title prob_calc
@@ -213,8 +216,7 @@ calcprob <- function (x) {
     }
     probcal
 }
-
-                                        #Estimate conditional distribution of test scores for each trait level p(Ability|score)= p(score)*p(ability)/p(score)
+#Estimate conditional distribution of test scores for each trait level p(Ability|score)= p(score)*p(ability)/p(score)
                                         #p(abilities|totscores) (probably need to merge them into one dataframe for this).
                                         #p(abilities|totscores)=P(ability)*P(totscores)/p(abilities)
                                         #Bin participants on total scores
@@ -235,16 +237,15 @@ calcprob <- function (x) {
 cond_prob_irt <- function(x) {
     abilities <- x[,1]
     totscores <- x[,2]
-    s.ord <- order(x$totscores2)
-    x.ord <- x[s.ord,]
-    x.ord2 <- na.omit(x.ord)
-    scores.len <- with(x.ord,tapply(z1, totscores2, length))
-    ## browser()
-    unique.ab <- with(x.ord,xtabs(z1~totscores2))
-    unique.scores <- as.numeric(names(scores.len))
+    s_ord <- order(x$totscores2)
+    x_ord <- x[s_ord,]
+    x_ord2 <- na.omit(x_ord)
+    scores.len <- with(x_ord,tapply(z1, totscores2, length))
+    unique_ab <- with(x_ord, xtabs(z1 ~ totscores2))
+    unique_scores <- as.numeric(names(scores_len))
     probmat <- as.data.frame(matrix(NA, ncol=20, nrow=100))
     for(i in seq_along(unique.scores)) {
-        cur.score <- x.ord2[x.ord2$totscores2==unique.scores[i],]
+        cur.score <- x.ord2[x.ord2$totscores2 == unique.scores[i],]
         unique.ab <- with(cur.score,table(z1, totscores2))
         unique.sc <- with(x.ord2, table(totscores2))
         for(j in seq_along(unique.ab)) {
