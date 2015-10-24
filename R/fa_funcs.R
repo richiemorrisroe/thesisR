@@ -19,14 +19,14 @@ factor_xtab <-  function (x, names=NULL, ...) {
 ##' @return a dataframe suitable for passing to xtable
 ##' @author Richie Morrisroe
 factor_coeff <- function (x, names=NULL) {
-   xload<-x$loadings
-    xcomm<-x$communality
-    xnames <- colnames(xload)
-    len <- length(colnames(xload))
+   xload <- x$loadings
+   xcomm <- x$communality
+   xnames <- colnames(xload)
+   len <- length(colnames(xload))
 
-    xcommload<-cbind(xload, xcomm)
+    xcommload <- cbind(xload, xcomm)
 
-   xmatdf<-as.matrix.data.frame(xcommload)
+   xmatdf <- as.matrix.data.frame(xcommload)
    if(!is.null(names)) {
        names2 <- c(names, "Communalites")
        colnames(xmatdf) <- names2
@@ -125,10 +125,10 @@ svd_cv <- function(x, ...) {
     resxtab
 }
 ##' {Return the mean, SD, min and max of a set of variables stored in a dataframe}
-##'{return an APA standard mean, se, min and max table for summary statistics}
+##'{return an APA standard mean, SE, min and max table for summary statistics}
 ##' @title apa_demo_tables
 ##' @param data a dataframe containing all numeric variables
-##' @param FUN function to use (currently not implemented
+##' @param FUN function to use (currently not implemented)
 ##' @param xtable Boolean. Return an xtable formatted object or not
 ##' @param ... other arguments passed to xtable
 ##' @return a dataframe containing the summary statistics
