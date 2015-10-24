@@ -245,19 +245,19 @@ cond_prob_irt <- function(x) {
     unique_scores <- as.numeric(names(scores_len))
     probmat <- as.data.frame(matrix(NA, ncol=20, nrow=100))
     for(i in seq_along(unique.scores)) {
-        cur.score <- x.ord2[x.ord2$totscores2 == unique.scores[i],]
-        unique.ab <- with(cur.score,table(z1, totscores2))
-        unique.sc <- with(x.ord2, table(totscores2))
-        for(j in seq_along(unique.ab)) {
-            p1 <- unique.ab[j]/length(unique(x.ord2$z1)) #ab prob
-            p2 <- nrow(cur.score)/nrow(x.ord2) #score prob
-            p3 <- p1*p2
-            p4 <- p3/p2
+        cur_score <- x_ord2[x_ord2$totscores2 == unique_scores[i],]
+        unique_ab <- with(cur_score,table(z1, totscores2))
+        unique_sc <- with(x_ord2, table(totscores2))
+        for(j in seq_along(unique_ab)) {
+            p1 <- unique_ab[j]/length(unique(x_ord2$z1)) #ab prob
+            p2 <- nrow(cur_score)/nrow(x_ord2) #score prob
+            p3 <- p1 * p2
+            p4 <- p3 / p2
             probmat[j,i] <- p4
         }
         probmat
     }
-    scorenames <- paste("Score", unique.scores, sep="")
+    scorenames <- paste("Score", unique_scores, sep="")
     names(probmat) <- scorenames
     probmat
 }
@@ -271,7 +271,7 @@ cond_prob_irt <- function(x) {
 get_irt_estimates <- function(fscores) {
     data <- fscores[["score.dat"]]
     abest <- data[,c("z1", "se.z1")]
-    names(abest) <- c("AbilityEst", "StdError")
+    names(abest) <- c("ability_estimations", "stderr")
     return(abest)
 }
 ##' {Actual implemented IRT test on new data function}
@@ -285,7 +285,10 @@ get_irt_estimates <- function(fscores) {
 ##' @param ... other arguments passed through
 ##' @return A dataframe containing two columns, ErrorApproximation and Correlation between models
 ##' @author Richie Morrisroe
-testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "gpcm",), grmconstraint= c(TRUE, FALSE), ...) {
+testIRTModels <- function(oldmodel,
+                          newdata,
+                          gpcmconstraint=c("rasch", "1PL", "gpcm",),
+                          grmconstraint= c(TRUE, FALSE), ...) {
     if(class(oldmodel)=="gpcm") {
         constraint <- gpcmconstraint
     }
@@ -294,18 +297,20 @@ testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "g
     }
 
     comp.para <- length(unique(as.vector(coef(oldmodel))))
-    predscores <- getIRTestimates(factor.scores(oldmodel, resp.patterns=newdata))
-    if(class(oldmodel)=="gpcm") {
-        newmodel <- gpcm(newdata, constraint=constraint)
+    predscores <- get_irt_estimates(
+        ltm::factor.scores(oldmodel, resp.patterns=newdata))
+    if(class(oldmodel) == "gpcm") {
+        newmodel <- ltm::gpcm(newdata, constraint=constraint)
     }
     else {
-        newmodel <- grm(newdata, constrained=constraint)
+        newmodel <- ltm::grm(newdata, constrained=constraint)
     }
-    newscores <- getIRTestimates(factor.scores(newmodel, resp.patterns=newdata))
+    newscores <- get_irt_estimates(
+        ltm::factor.scores(newmodel, resp.patterns=newdata))
     diffscores <- mapply("-", predscores[,1], newscores[,1])
-    rea <- sqrt(sum(diffscores^2))*log(comp.para)
+    rea <- sqrt(sum(diffscores ^ 2)) * log(comp.para)
     scorescor <- cor(predscores[,1], newscores[,1], ...)
-    res <- data.frame(ErrorApproximation=rea, Correlation=scorescor)
+    res <- data.frame(error_approximation=rea, correlation=scorescor)
     return(res)
 }
 ##' {Extract fit functions from an OpenMx object} 
@@ -316,13 +321,19 @@ testIRTModels <- function(oldmodel, newdata, gpcmconstraint=c("rasch", "1PL", "g
 ##' @return a dataframe containing the fit functions
 ##' @author Richie Morrisroe
 get_mxfit_functions <- function(mx, label=NULL) {
+    if(!require(OpenMx)) {
+        cat("OpenMx is required for this function to operate\n")
+    }
     summ <- summary(mx)
     bic <- summ$BIC.Mx
     aic <- summ$AIC.Mx
     obs <- summ$numObs
     param <- summ$estimatedParameters
 
-    res <- data.frame( bic, aic, obs, param)
+    res <- data.frame(BIC=bic,
+                      AIC=aic,
+                      observations=obs,
+                      estimated_parameters=param)
     if(!is.null(label)) {
         rownames(res) <- label
     }
@@ -346,7 +357,7 @@ irt_average <- function(sols=list()) {
 ##' @param model An MxModel object
 ##' @return the AIC of the object
 ##' @author Richie Morrisroe
-smooth_AIC <- function(model) {
+smooth_aic <- function(model) {
     if(class(model) %in% c("MxRAMModel", "MxModel")) {
         res <- summary(model)$AIC.Mx
     }
@@ -361,14 +372,13 @@ smooth_AIC <- function(model) {
 ##' @param models A set of MxModel objects
 ##' @return a vector of weights
 ##' @author Richie Morrisroe
-smoothed_AIC <- function (models) {
-    information <- lapply(models, smoothAIC)
-    exp.info <- lapply(information, function(x) exp(-0.5*x))
-    info <- Reduce(`+`, exp.info)
+smoothed_aic <- function (models) {
+    information <- lapply(models, smooth_aic)
+    exp_info <- lapply(information, function(x) exp(- 0.5 * x))
+    info <- Reduce(`+`, exp_info)
     weights <- vector(mode="numeric", length=length(information))
     for (i in 1:length(information)) {
-        weights[i] <- exp(-0.5*information[[i]])/info
-        ## browser()
+        weights[i] <- exp(-0.5 * information[[i]]) / info
     }
     return(weights)
 }
@@ -381,7 +391,7 @@ smoothed_AIC <- function (models) {
 ##' @author Richie Morrisroe
 irt_average_factor_scores <- function (scores=list) {
     abilities <- sapply(scores, `[`, 1)
-    ab.average <- Reduce(`+`, abilities)/length(abilities)
-    names(ab.average) <- "AbilityEst"
-    return(ab.average)
+    ab_average <- Reduce(`+`, abilities) / length(abilities)
+    names(ab_average) <- "ability_estimation"
+    return(ab_average)
 }
