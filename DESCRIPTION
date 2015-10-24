@@ -10,7 +10,8 @@ Imports:
     reshape2,
     plyr,
     GPArotation,
-    xtable
+    xtable,
+    caret
 License: GPL-3
 LazyData: true
 Suggests: testthat
