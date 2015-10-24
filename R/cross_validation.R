@@ -128,9 +128,9 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
 ##' @param data a dataframe containing pred and obs columns
 ##' @return a scalar number for the RMSEA
 ##' @author Richie Morrisroe
-rmsea <- function(data) {
-    erro <- with(data, pred - obs)
-    err.sq <- erro ^ 2
-    root.err <- sqrt(mean(err.sq))
-    return(root.err)
+rmsea <- function(data, pred_col=pred, obs_col=obs) {
+    erro <- with(data, pred_col - obs_col)
+    err_sq <- erro ^ 2
+    root_err <- sqrt(mean(err_sq))
+    return(root_err)
 }
