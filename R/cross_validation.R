@@ -56,7 +56,12 @@ train_folds <- function(data, Form, control, sizes, metric, updown) {
     cvresults <- list()
     for (i in 1:length(data)) {
         #again, another bug that could be caused by lexical scoping
-        res <- train(form=Form, data=data, na.action="na.omit", size=sizes, metric=metric, maximise=updown, control=rfeControl)
+        res <- caret::train(form=Form, data=data,
+                            na.action="na.omit",
+                            size=sizes,
+                            metric=metric,
+                            maximise=updown,
+                            control=rfeControl)
         cvresults[[i]] <- res
     }
     names(cvresults) <- names(data)
@@ -78,10 +83,9 @@ split_sample <- function(x, split) {
     splits <- cut(indices, split, labels=FALSE)
     samplist <- list()
     for(i in 1:max(split)) {
-        samp<-x[splits==i,]
+        samp <- x[splits == i,]
         assign(paste("samp", i, sep=""), value=samp, 1)
         samplist[[i]] <- get(paste("samp",i, sep=""))
-        ## names(samplist[i]) <- paste("split", i, sep="")
     }
     samplist
 }
@@ -103,17 +107,20 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
     variable <- grep(responsevariable, x=names(data))
     for (i in 1:n) {
         print(i)
-        trainind <- with(data2, createDataPartition(data[,variable], p=0.8, list=FALSE))
+        trainind <- with(data2,
+                         caret::createDataPartition(
+                             data[,variable], p=0.8, list=FALSE))
         trainset <- data2[trainind,]
         testset <- data2[-trainind,]
-        train.res <- train(formula=form, data=trainset, ...)
+        train.res <- caret::train(formula=form, data=trainset, ...)
 
-        train.pred <- predict(train.res, testset)
-        res[[i]] <- confusionMatrix(train.pred, testset[,responsevariable])
+        train.pred <- caret::predict(train.res, testset)
+        res[[i]] <- caret::confusionMatrix(train.pred, testset[,responsevariable])
         Accuracy[i] <- res[[i]]$overall[1]
     }
-
+##this was a wierd one, lintr complains if last action in function is assigment
     res2 <- list(res, Accuracy)
+    res2
 }
 ##' {calculate the root mean square error of approximattion for a dataframe containing columns named pred and obs} 
 ##' \details{See Desc} 
@@ -122,8 +129,8 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
 ##' @return a scalar number for the RMSEA
 ##' @author Richie Morrisroe
 rmsea <- function(data) {
-    erro <- with(data, pred-obs)
-    err.sq <- erro^2
+    erro <- with(data, pred - obs)
+    err.sq <- erro ^ 2
     root.err <- sqrt(mean(err.sq))
     return(root.err)
 }
