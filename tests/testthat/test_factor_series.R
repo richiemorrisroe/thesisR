@@ -29,3 +29,8 @@ test_that("fit indices fails when given an item of incorrect class",
           expect_error(fit_indices(tcqitems)))
 test_that("fit indices produces output when given correct input",
           expect_output(fit_indices(tcq_fact6), ".*"))
+rand_fact_wold <- cv.svd.wold(na.omit(rand), k=10, maxrank=12)
+rand.fact.gabriel <- cv.svd.gabriel(na.omit(rand), krow=2, kcol=2, maxrank=18)
+svd_cv_rand <- svd_cv(rand_fact_wold)
+test_that("svd_cv returns a data.frame",
+          expect_is(svd_cv(rand.fact.gabriel), "data.frame"))
