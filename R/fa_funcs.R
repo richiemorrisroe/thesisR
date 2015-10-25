@@ -91,6 +91,7 @@ extract_h2u2 <- function (x) {
 ##' @return A dataframe containing the fit indices
 ##' @author Richard Morrisroe
 fit_indices <- function (x, labels=NULL) {
+    stopifnot(class(x) %in% c("psych", "fa"))
   tli <- x$TLI
   bic <- x$BIC
   rmsea <- x$RMSEA
