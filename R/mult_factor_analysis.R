@@ -4,9 +4,9 @@
 ##' @inheritParams psych::fa
 ##' @param data a matrix of numeric data
 ##' @param factors a sequence of numbers
-##' @param meth 
-##' @param rotation 
-##' @param scores 
+##' @param meth method of rotation (see \link[psych]{fa}), defaults to minres 
+##' @param rotation a method of rotation see \link[psych]{fa}. defaults to oblimin
+##' @param scores which kind of factor scores to compute
 ##' @param ... further arguments passed through to psych::fa
 ##' @return a factor_series object
 ##' @author Richard Morrisroe

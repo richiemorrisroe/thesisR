@@ -34,7 +34,7 @@ ggplot_grm <- function (grm, ...) {
     xt$response <- response
     xtm <- reshape2::melt(xt, id="response")
     names(xtm) <- c("threshold", "item", "ability")
-    plot1 <- ggplot2::ggplot(x.tm,
+    plot1 <- ggplot2::ggplot(xtm,
                              aes(x=ability,
                                  y=item,
                                  shape=as.factor(threshold),
@@ -391,4 +391,61 @@ irt_average_factor_scores <- function (scores=list) {
     ab_average <- Reduce(`+`, abilities) / length(abilities)
     names(ab_average) <- "ability_estimation"
     return(ab_average)
+}
+##' {A function that returns the coefficients from an ltm model} 
+##'
+##' {Additionally handles averaged coefficients and standard errors}
+##' @title coef_irt
+##' @param grm model
+##' @param se return standard errors?
+##' @param averaged return averaged errors
+##' @return a set of IRT coefficients in
+##' @author Richard Morrisroe
+coef_irt <- function(grm, se=FALSE, averaged=FALSE) {
+    if(class(grm)=="grm" || class(grm)=="gpcm") {
+        dat <- coef(grm)
+        itemnames <- rownames(coef(grm))
+    }
+    else {
+        dat <- grm
+    }
+    if(averaged) {
+        if(se) {
+            dat <- grm$coef
+        } else {
+            dat <- grm
+        }
+        dat <- round(dat, 2)
+        itemnames <- rownames(dat)
+        if(se) {
+        standerr <- t(grm$se)
+        standerr <- round(standerr, 2)
+    }
+    }
+
+
+    if(se & !averaged ) {
+        standard.errors <- sapply(coef(summary(grm)), '[[', "std.err")
+        standerr <- round(standard.errors, 2)
+    }
+    dims <- dim(dat)
+    betas <- dims[2]-1
+    if(se) {
+        dat <- as.matrix(dat)
+        dat.se <- matrix(paste(dat,
+                               " (",
+                               standerr,
+                               ")",
+                               sep=""),
+                         nrow=dims[1],
+                         ncol=dims[2])
+
+        rownames(dat.se) <- itemnames
+        dat <- dat.se
+    }
+    beta.names <- paste("$", "\\beta",  "^", 1:betas, " (se) ", "$", sep="")
+    alpha.name <- "$\\alpha$"
+    allnames <- c(beta.names, alpha.name)
+    colnames(dat) <- allnames
+    dat
 }

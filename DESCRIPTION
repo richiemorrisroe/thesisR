@@ -13,7 +13,8 @@ Imports:
     xtable,
     caret,
     glmnet,
-    ltm
+    ltm,
+    OpenMx
 License: GPL-3
 LazyData: true
 Suggests: testthat,

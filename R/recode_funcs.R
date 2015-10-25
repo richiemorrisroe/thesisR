@@ -75,5 +75,5 @@ create_sum_scores <- function(data) {
              grep("LOTR",
                   x=names(data))],
         na.rm=TRUE)
-return(data)
+return(data2)
 }
