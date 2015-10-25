@@ -101,9 +101,9 @@ get_loadings <- function (mfa) {
   ind <- lapply(mfa, extract_loadings)
   ind
 }
-##' .. content for \description{This seems very similar to FactorAverage, rationalise these functions ASAP} (no empty lines) ..
-##'
-##' .. {} ..
+##' {This seems very similar to FactorAverage, rationalise these functions ASAP}
+##' (no empty lines)
+##' {}
 ##' @title combine_loadings
 ##' @param mfa a multi-factor object
 ##' @return a list of mean loadings averaged over all potential factor solutions
@@ -124,19 +124,4 @@ combine_loadings <-  function (mfa) {
   loadings
 
   lapply(loadings, function (x) Reduce("+", x))
-}
-##' .. content for \description{} (no empty lines) ..
-##' Again, I don't think I actually finished this function
-##' .. content for \details{} ..
-##' @title display_rot
-##' @param mfa
-##' @param method
-##' @param rotreq
-##' @return results, yo!
-##' @author Richard Morrisroe
-display_rot <- function (mfa, method=NULL, rotreq=NULL) {
-  rotationreq <- rotreq
-  meth <- method
-  resind <- grep(rotationreq, x=names(mfa))
-  res <- mfa[[resind]]
 }
