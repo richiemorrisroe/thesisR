@@ -34,9 +34,8 @@ penalised_regression <- function(x, y,
     return(pred.coef)
   }
   }
-##' .. content for \description{Something that would have been rocking, had I been able to make it work} (no empty lines) ..
-##'
-##' .. content for \details{} ..
+##' {Something that would have been rocking, had I been able to make it work}
+##' {See above}
 ##' @title tune_loess
 ##' @param formula a formula describing the model
 ##' @param data the dataset to fit the model to

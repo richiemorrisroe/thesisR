@@ -55,7 +55,6 @@ iatscore <-  diff / overallsd
                   )
 }
 ##' {Get the difference between two sets of IAT scores}
-##'
 ##' {As above}
 ##' @title iat_diff
 ##' @param x an IAT score

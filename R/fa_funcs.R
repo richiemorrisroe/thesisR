@@ -107,14 +107,13 @@ fit_indices <- function (x, labels=NULL) {
     res
 }
 ##' {Performs a SVD based CV metric used in chemometrics}
-##' {Find reference for this - need to check external hard drive as no longer have academic access :( Appears to depend on some weird-ass package and takes an object of which I don't know the class, so this needs to be fixed}
+##' {Takes either a wold or gabriel cross validation statistic, and returns a dataframe suitable for printing}
 ##' @title svd_cv
 ##' @param x
-##' @param ... further arguments passed to xtable (these should be removed)
-##' @return an xtable object containing the SVD rank, prediction error and SD of prediction error
+##' ##' @return a dataframe containing the SVD rank, prediction error and SD of prediction error
 ##' @author Richie Morrisroe
-svd_cv <- function(x, ...) {
-    stopifnot(class(x) %in% c("cvsvd"))
+svd_cv <- function(x) {
+    stopifnot(inherits(x, "cvsvd"))
     msep <- x$msep
     K <- nrow(msep)
     rank <- seq(from = 0, to = x$maxrank, by = 1)
@@ -138,8 +137,8 @@ apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
     fun <- match.call(FUN)
     data.m <- reshape2::melt(data)
     data.tab <- plyr::ddply(data.m,
-                            .(variable),
-                            summarise,
+                            plyr::.(variable),
+                            plyr::summarise,
                             Mean=mean(value, na.rm=TRUE),
                             SD=sd(value, na.rm=TRUE),
                             Min=min(value, na.rm=TRUE),

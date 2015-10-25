@@ -89,8 +89,8 @@ split_sample <- function(x, split) {
     }
     samplist
 }
-##' {A function for performing repeated Cross-validation} (no empty lines) ..
-##'  \details{See description}
+##' {A function for performing repeated Cross-validation}
+##' {See description}
 ##' @title repeat_cv
 ##' @param form a formula describing the model
 ##' @param data the data to fit on
@@ -123,7 +123,7 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
     res2
 }
 ##' {calculate the root mean square error of approximattion for a dataframe containing columns named pred and obs} 
-##' \details{See Desc} 
+##' {See Desc} 
 ##' @title rmsea
 ##' @param data a dataframe containing pred and obs columns
 ##' @return a scalar number for the RMSEA

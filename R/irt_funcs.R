@@ -96,8 +96,7 @@ get_irt_preds <- function (x) {
     res
 }
 ##' compare Z-scores for two IRT models
-##'
-##' content for \details{Examine the differences in z-scores between two (and only two) IRT models}
+##' {Examine the differences in z-scores between two (and only two) IRT models}
 ##' @title compare_irt_scores
 ##' @param x an IRT model
 ##' @param y an IRT model
@@ -275,8 +274,7 @@ get_irt_estimates <- function(fscores) {
     return(abest)
 }
 ##' {Actual implemented IRT test on new data function}
-##'
-##' .. content for \details{Examines the difference in accuracy between a model estimated on the new data, versus the predictions from the old model on the new data} ..
+##' {Examines the difference in accuracy between a model estimated on the new data, versus the predictions from the old model on the new data} 
 ##' @title test_irt_models
 ##' @param oldmodel the original IRT model
 ##' @param newdata the new data
@@ -285,7 +283,7 @@ get_irt_estimates <- function(fscores) {
 ##' @param ... other arguments passed through
 ##' @return A dataframe containing two columns, ErrorApproximation and Correlation between models
 ##' @author Richie Morrisroe
-testIRTModels <- function(oldmodel,
+test_irt_models <- function(oldmodel,
                           newdata,
                           gpcmconstraint=c("rasch", "1PL", "gpcm",),
                           grmconstraint= c(TRUE, FALSE), ...) {

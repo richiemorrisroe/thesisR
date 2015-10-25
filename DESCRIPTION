@@ -2,7 +2,7 @@ Package: thesisR
 Title: Miscellaneous thesis-related functions
 Version: 0.1
 Authors@R: "Richie Morrisroe <richie.morrisroe@gmail.com> [aut, cre]"
-Description: Mostly psychometric functions
+Description: A series of functions used in my PhD thesis
 Depends: R (>= 3.1.2)
 Imports: 
 	 psych,

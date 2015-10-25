@@ -1,6 +1,6 @@
 ##' {Import all physiological data files}
 ##'
-##' .. content for \details{} ..
+##' {As above}
 ##' @title file_import
 ##' @param directory a directory in which to look for files
 ##' @param pattern a regualar expression matching a set of files
@@ -10,8 +10,8 @@ file_import <- function(directory, pattern) {
   files <- list.files(directory, pattern=pattern, full.names=TRUE)
   file_list <- lapply(files, read.table, header=FALSE)
   files2 <- gsub(".*-.*-([0-9][0-9][0-9][0-9][0-9]?).txt", "\\1", x=files)
-  names(file.list) <- files2
-  file.list
+  names(file_list) <- files2
+  file_list
   ## file.df <- do.call(cbind, file.list)
 }
 ##' {Convert a list (of physiological data files) to a dataframe}
@@ -60,8 +60,7 @@ lazy_load <- function (files, names, cols) {
   }
 }
 ##' {Take a list of files, read them in and calculate the number of lines in each of them} 
-##'
-##' .. content for \details{This might be useful for someone else, but there are some hardcoded numbers in here that will trip you up} ..
+##' {This might be useful for someone else, but there are some hardcoded numbers in here that will trip you up}
 ##' @title lazy_length
 ##' @param files a list of files
 ##' @return a matrix containing a file identifier and its length
@@ -84,8 +83,7 @@ lazy_length <- function(files) {
 
 
 ##' {Internal thesis function to get the participant number for use with lazylength} 
-##'
-##' .. content for \details{Again, not massively useful for anyone else} ..
+##' {Again, not massively useful for anyone else}
 ##' @title get_participant_number
 ##' @param files 
 ##' @return the identifier for each file
@@ -98,8 +96,7 @@ get_participant_number <- function(files) {
     pp
 }
 ##' {A better implementation of lazylength} 
-##'
-##' .. content for \details{} ..
+##' {I love reimplementing things!}
 ##' @title lazy_length2
 ##' @param files a vector of files
 ##' @return a file identifier and the nrow() of each file 
@@ -118,12 +115,12 @@ lazy_length <- function(files) {
 }
 ##' {Calculate the overall mean by file for each file} 
 ##'
-##' .. content for \details{} ..
+##' {Take a list of files and calculate the mean of each file}
 ##' @title lazy_mean
 ##' @param path path in which files can be found
 ##' @param pattern a regular expression matching the files
 ##' @param ... other arguments passed through to list files
-##' @return a mean response for each file in the specified column
+##' @return a matrix containing a mean response for each file in the specified column
 ##' @author Richie Morrisroe
 lazy_mean <- function( path, pattern, ...) {
     lsfiles <- list.files(path, pattern, ...)
@@ -169,8 +166,7 @@ lazy_downsample <- function(path, pattern, aggregate=1000, FUN=mean, ...) {
 }
         
 ##' {Calculate the range of a set of data} 
-##'
-##' .. content for \details{get range of a set of data, useful for HRV peak analysis} ..
+##' {get range of a set of data, useful for HRV peak analysis}
 ##' @title diff_func
 ##' @param data a dataframe containing one variable
 ##' @return the difference between the maximum and the minimum values
@@ -182,8 +178,7 @@ diff_func <- function(data) {
   return(time)
 }
 ##' {A function to interpolate lower sample data to match higher sample data - locf interpolation} 
-##'
-##' .. content for \details{This has a truly terrible name, and some godawful hacks that make it probable that it contains bugs} ..
+##' {This has a truly terrible name, and some godawful hacks that make it probable that it contains bugs}
 ##' @title interpolate_pain
 ##' @param pain the data to interpolate
 ##' @param padding the offsets at which to start the interpolation
@@ -216,9 +211,8 @@ interpolate_pain <- function(pain, padding) {
         res_mat
     
     }
-##' {Another interpolation function} 
-##' TODO: figure out which one of these is actually used
-##' .. content for \details{Yeah, I have two different interpolation functions, both probably incorrect in different ways} ..
+##' {Another interpolation function TODO: figure out which one of these is actually used} 
+##' {Yeah, I have two different interpolation functions, both probably incorrect in different ways}
 ##' @title interpolate2
 ##' @param painscores 
 ##' @param painmetadata 
