@@ -24,3 +24,8 @@ test_that("factor_cor returns an xtable",
 loading_list <- extract_loadings(tcq_fact6)
 test_that("extract loadings returns a list",
           expect_is(extract_loadings(tcq_fact6), "list"))
+fit4 <- fit_indices(tcq_fact6)
+test_that("fit indices fails when given an item of incorrect class",
+          expect_fail(fit_indices(tcqitems)))
+test_that("fit indices produces output when given correct input",
+          expect_output(fit_indices(tcq_fact6)))
