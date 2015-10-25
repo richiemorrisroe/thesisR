@@ -114,6 +114,7 @@ fit_indices <- function (x, labels=NULL) {
 ##' @return an xtable object containing the SVD rank, prediction error and SD of prediction error
 ##' @author Richie Morrisroe
 svd_cv <- function(x, ...) {
+    stopifnot(class(x) %in% c("cvsvd"))
     msep <- x$msep
     K <- nrow(msep)
     rank <- seq(from = 0, to = x$maxrank, by = 1)
@@ -121,8 +122,7 @@ svd_cv <- function(x, ...) {
     msep.se <- apply(x$msep, 2, sd) / sqrt(K)
     res <- as.data.frame(cbind(rank, msep.mean, msep.se))
     names(res) <- c("Rank", "Prediction Error", "Prediction Error SE")
-    resxtab <- xtable::xtable(res, ...)
-    resxtab
+    res
 }
 ##' {Return the mean, SD, min and max of a set of variables stored in a dataframe}
 ##'{return an APA standard mean, SE, min and max table for summary statistics}
