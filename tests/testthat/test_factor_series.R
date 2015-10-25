@@ -15,3 +15,9 @@ maas1_xtab <- factor_xtab(maasfact1, names=c("Mindfulness"),
 One Factor Solution, MAAS, Sample One")
 test_that("factor_xtab returns an xtable object",
           expect_is(maas1_xtab, c("data.frame", "xtable")))
+data(tcq)
+tcqitems <- tcq[,grep("^Pill|^Cre|^Inj|^Acu|^Ho|^Re[1-6]$", x=names(tcq))]
+tcq_fact6 <- psych::fa(na.omit(tcqitems), nfactors=6, method="minres", rotate="promax")
+tcq6_cor_xtab <- factor_cor(tcq_fact6)
+test_that("factor_cor returns an xtable",
+          expect_is(tcq6_cor_xtab, c("xtable", "data.frame")))
