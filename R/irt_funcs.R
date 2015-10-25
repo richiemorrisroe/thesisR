@@ -111,15 +111,14 @@ compare_irt_scores <- function (x, y) {
     res <- list(cor=cor_xy, differences=diff_xy)
     res
 }
-##' .. Unfinished function used to perform cross-validation over IRT models
-##'
+##' {Unfinished function used to perform cross-validation over IRT models}
 ##' {See Description}
 ##' @title irt_cv
 ##' @param data a dataframe containing the data to be used
 ##' @param model the kind of model (either grm or gpcm)
 ##' @param constraint the constraint to use - see documentation for grm and gpcm objects
-##' @param splits  the number of splits to use
-##' @param .... 
+##' @param splits the number of splits to use
+##' @param ... extra arguments passed through to other methods 
 ##' @return a test and train set
 ##' @author Richie Morrisroe
 irt_cv <- function (data,
@@ -139,7 +138,7 @@ irt_cv <- function (data,
 ##'
 ##' {See description}
 ##' @title irt_cross_validate
-##' @param x 
+##' @param x a dataframe containing all numeric variables
 ##' @return a dataframe containing observed and expected scores
 ##' @author Richie Morrisroe
 irt_cross_validate <- function(x) {
@@ -169,8 +168,8 @@ irt_cross_validate <- function(x) {
 ##' Calculate  something, depending on some other stuff
 ##' {See description}
 ##' @title prob_calc
-##' @param x 
-##' @param totscores 
+##' @param x something
+##' @param totscores some results
 ##' @return calculated probabilities
 ##' @author Richie Morrisroe
 prob_calc <- function(x, totscores) {
@@ -179,7 +178,7 @@ prob_calc <- function(x, totscores) {
 ##' I really wonder if I can salvage anything from these
 ##' {No really, why did I do all of this?}
 ##' @title calc_prob
-##' @param x 
+##' @param x who the hell knows?
 ##' @return calculated probabilities
 ##' @author Richie Morrisroe
 calcprob <- function (x) {
@@ -264,7 +263,7 @@ cond_prob_irt <- function(x) {
 ##' {Maybe a repeat of the earlier functions}
 ##' {Some stuff} 
 ##' @title get_irt_estimates
-##' @param fscores 
+##' @param fscores the IRT factor scores returned from ltm::factor.scores
 ##' @return estimated abilities and their standard errors
 ##' @author Richie Morrisroe
 get_irt_estimates <- function(fscores) {

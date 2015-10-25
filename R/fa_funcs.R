@@ -1,9 +1,10 @@
 ##' {Takes an fa object, extracts the coefficients, and returns an xtable object of these coefficients (including communalities)}
 ##'
-##' {Returns a table suitable for research. (Probably) doesn't meet APA, or indeed any, standards. Thin wrapper around FactorCoeff}
+##' {Returns a table suitable for research. (Probably) doesn't meet APA, or indeed any, standards. Thin wrapper around factor_coeff}
 ##' @title factor_xtab
 ##' @param x an object of class "psych" "fa"
-##' @param ...  further arguments passed to the FactorCoeff method
+##' @param names names to be given to the output. Should be a vector of strings
+##' @param ... further arguments passed to the FactorCoeff method
 ##' @return xtable object of coefficients
 ##' @author Richard Morrisroe
 factor_xtab <-  function (x, names=NULL, ...) {
@@ -14,8 +15,8 @@ factor_xtab <-  function (x, names=NULL, ...) {
 ##' {This function takes an fa object and extracts the coefficients from it}
 ##'  {Extracts the loadings and communalities separately and cbinds them}
 ##' @title factor_coeff
-##' @param x
-##' @param names
+##' @param x a factor solution
+##' @param names names to give the output
 ##' @return a dataframe suitable for passing to xtable
 ##' @author Richie Morrisroe
 factor_coeff <- function (x, names=NULL) {
@@ -41,7 +42,7 @@ factor_coeff <- function (x, names=NULL) {
 ##' {Extracts the correlations of factors from an fa object}
 ##' {gets the estimated factor correlations. Only really useful with oblique rotations}
 ##' @title factor_cor
-##' @param x
+##' @param x a factor solution
 ##' @param ... Further arguments passed to the xtable method
 ##' @return an xtable object containing the between-factor correlations
 ##' @author Richard Morrisroe
@@ -88,6 +89,7 @@ extract_h2u2 <- function (x) {
 ##' {see description}
 ##' @title fit_indices
 ##' @param x a psych fa object
+##' @param labels something unused
 ##' @return A dataframe containing the fit indices
 ##' @author Richard Morrisroe
 fit_indices <- function (x, labels=NULL) {
@@ -109,10 +111,13 @@ fit_indices <- function (x, labels=NULL) {
 ##' {Performs a SVD based CV metric used in chemometrics}
 ##' {Takes either a wold or gabriel cross validation statistic, and returns a dataframe suitable for printing}
 ##' @title svd_cv
-##' @param x
+##' @param x a svdcv factor solution
 ##' ##' @return a dataframe containing the SVD rank, prediction error and SD of prediction error
 ##' @author Richie Morrisroe
 svd_cv <- function(x) {
+    if(!requireNamespace("cvsvd", quietly=TRUE)) {
+        stop("cvsvd is required for this function")
+    }
     stopifnot(inherits(x, "cvsvd"))
     msep <- x$msep
     K <- nrow(msep)
@@ -155,7 +160,7 @@ apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
 ##' @param sols a list of factor solutions to average over
 ##' @param mynames who the hell knows?
 ##' @param FUN function to aggregate by
-##' @param .... other arguments passed to fun
+##' @param ... other arguments passed to fun
 ##' @return a matrix containing the averaged fa solutions
 ##' @author Richie Morrisroe
 factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ...) {

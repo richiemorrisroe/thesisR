@@ -40,7 +40,7 @@ penalised_regression <- function(x, y,
 ##' @param formula a formula describing the model
 ##' @param data the dataset to fit the model to
 ##' @param newdata the dataset to predict over
-##' @param tuneLength the size of the grid to examine
+##' @param tune_length length of solutions to tune over
 ##' @param ... arguments passed through to loess
 ##' @return not much, currently
 ##' @author Richie Morrisroe

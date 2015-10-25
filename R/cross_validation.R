@@ -26,8 +26,8 @@ train_test_sets <- function (x, data) {
 ##' {Takes the result of TestTrainSplit and actually splits it}
 ##' {See DESC}
 ##' @title seperate_test_and_train
-##' @param data 
-##' @param test 
+##' @param data a list of dataframes with sampled data
+##' @param test return test if true, else train
 ##' @return a dataframe
 ##' @author Richie Morrisroe
 seperate_test_and_train <- function(data, test=TRUE) {
@@ -44,12 +44,12 @@ seperate_test_and_train <- function(data, test=TRUE) {
 ##' {This was a wrapper around train to test the theory that the RF was actually predicting placebo perfectly}
 ##' {See desc} 
 ##' @title train_folds
-##' @param data 
-##' @param Form 
-##' @param control 
-##' @param sizes 
-##' @param metric 
-##' @param updown 
+##' @param data a dataframe 
+##' @param Form the formula to fit the model with
+##' @param control control parameters for train
+##' @param sizes @inheritParams
+##' @param metric @inheritParams
+##' @param updown who knows?
 ##' @return model fits from the cv process
 ##' @author Richie Morrisroe
 train_folds <- function(data, Form, control, sizes, metric, updown) {
@@ -126,6 +126,8 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
 ##' {See Desc} 
 ##' @title rmsea
 ##' @param data a dataframe containing pred and obs columns
+##' @param pred_col prediction column
+##' @param obs_col observation column
 ##' @return a scalar number for the RMSEA
 ##' @author Richie Morrisroe
 rmsea <- function(data, pred_col=pred, obs_col=obs) {

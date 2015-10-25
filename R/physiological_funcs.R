@@ -85,7 +85,7 @@ lazy_length <- function(files) {
 ##' {Internal thesis function to get the participant number for use with lazylength} 
 ##' {Again, not massively useful for anyone else}
 ##' @title get_participant_number
-##' @param files 
+##' @param files a series of files which contain a participant number 
 ##' @return the identifier for each file
 ##' @author Richie Morrisroe
 get_participant_number <- function(files) {
@@ -214,8 +214,8 @@ interpolate_pain <- function(pain, padding) {
 ##' {Another interpolation function TODO: figure out which one of these is actually used} 
 ##' {Yeah, I have two different interpolation functions, both probably incorrect in different ways}
 ##' @title interpolate2
-##' @param painscores 
-##' @param painmetadata 
+##' @param painscores a dataframe containing pain ratings
+##' @param painmetadata a dataframe containing meta-data (when squeezing stop, when pain was applied, etc)
 ##' @return interpolations
 ##' @author Richie Morrisroe
 interpolate2 <- function(painscores, painmetadata) {

@@ -50,11 +50,12 @@ communality <- function(fs) {
 ##' {Extract loadings from a list of multiple factor solutions}
 ##' {As above}
 ##' @title get_loadings
-##' @param mfa
-##' @return a list containing the loadings of all mfa solutions in mfa
+##' @param fs a factor series object
+##' @param loadings a scalar specifying the minimum threshold for items to be returned
+##' @return a list containing the loadings of all fs solutiions
 ##' @author Richard Morrisroe
-get_loadings <- function (mfa) {
-  ind <- lapply(mfa, extract_loadings)
+get_loadings <- function (fs, loadings=0.3) {
+  ind <- lapply(fs, extract_loadings, loadings)
   ind
 }
 ##' {This seems very similar to FactorAverage, rationalise these functions ASAP}
