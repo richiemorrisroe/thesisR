@@ -21,3 +21,6 @@ tcq_fact6 <- psych::fa(na.omit(tcqitems), nfactors=6, method="minres", rotate="p
 tcq6_cor_xtab <- factor_cor(tcq_fact6)
 test_that("factor_cor returns an xtable",
           expect_is(tcq6_cor_xtab, c("xtable", "data.frame")))
+loading_list <- extract_loadings(tcq_fact6)
+test_that("extract loadings returns a list",
+          expect_is(extract_loadings(tcq_fact6), "list"))
