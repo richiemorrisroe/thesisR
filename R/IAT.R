@@ -1,6 +1,6 @@
 ##' {A function to calculate the IAT score (the D measure from Greenwald (2003)}
 ##'
-##' .. content for \details{} ..
+##' {This function takes the response time data for each participant (one block of stimuli in each row, with Participant variable repeated and calculates the IAT score for each Pp using either a median or mean aggregation. It assumes many things about the structure of the input, and should not be used as-is (I will fix it at some point, however).} ..
 ##' @title calc_iat_scores
 ##' @param data - a dataframe containing the stimuli names and response times, with one row per block
 ##' @param Code the participant identifier code
@@ -56,7 +56,7 @@ iatscore <-  diff / overallsd
 }
 ##' {Get the difference between two sets of IAT scores}
 ##'
-##' .. content for \details{} ..
+##' {As above}
 ##' @title iat_diff
 ##' @param x an IAT score
 ##' @param y an IAT score
