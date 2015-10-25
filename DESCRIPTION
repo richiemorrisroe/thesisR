@@ -11,7 +11,10 @@ Imports:
     plyr,
     GPArotation,
     xtable,
-    caret
+    caret,
+    glmnet,
+    ltm
 License: GPL-3
 LazyData: true
-Suggests: testthat
+Suggests: testthat,
+    bcv

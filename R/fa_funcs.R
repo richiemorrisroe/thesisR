@@ -115,7 +115,7 @@ fit_indices <- function (x, labels=NULL) {
 ##' ##' @return a dataframe containing the SVD rank, prediction error and SD of prediction error
 ##' @author Richie Morrisroe
 svd_cv <- function(x) {
-    if(!requireNamespace("cvsvd", quietly=TRUE)) {
+    if(!requireNamespace("bcv", quietly=TRUE)) {
         stop("cvsvd is required for this function")
     }
     stopifnot(inherits(x, "cvsvd"))

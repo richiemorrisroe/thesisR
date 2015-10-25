@@ -15,7 +15,7 @@ file_import <- function(directory, pattern) {
   ## file.df <- do.call(cbind, file.list)
 }
 ##' {Convert a list (of physiological data files) to a dataframe}
-##' .. content for \details{} ..
+##' {Some content}
 ##' @title list_to_df
 ##' @param data the datafile
 ##' @param ind indices to examine

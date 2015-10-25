@@ -47,8 +47,8 @@ seperate_test_and_train <- function(data, test=TRUE) {
 ##' @param data a dataframe 
 ##' @param Form the formula to fit the model with
 ##' @param control control parameters for train
-##' @param sizes @inheritParams
-##' @param metric @inheritParams
+##' @param sizes @inheritParams caret::train
+##' @param metric @inheritParams caret::train
 ##' @param updown who knows?
 ##' @return model fits from the cv process
 ##' @author Richie Morrisroe

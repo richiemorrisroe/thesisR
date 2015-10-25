@@ -1,11 +1,12 @@
 ##' {Fit a series of factor solutions from 1:k}
 ##' {Fit a series of factor solutions}
 ##' @title fit_factor_series
+##' @inheritParams psych::fa
 ##' @param data a matrix of numeric data
 ##' @param factors a sequence of numbers
-##' @param meth @inheritParams psych::fa
-##' @param rotation @inheritParams psych::fa
-##' @param scores @inheritParams psych::fa
+##' @param meth 
+##' @param rotation 
+##' @param scores 
 ##' @param ... further arguments passed through to psych::fa
 ##' @return a factor_series object
 ##' @author Richard Morrisroe
