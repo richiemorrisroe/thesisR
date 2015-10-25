@@ -68,7 +68,7 @@ extract_loadings <- function (x, loadings=0.3) {
     xitemsload <- apply(xucmat, 2,
                         function (y)
                         names(y[which(abs(y) >=
-                                      loadings)])) #return the names of items which have appreciable loadings
+                                      loadings)])) 
   xitemsload
 }
 ##' {Takes a psych fa object, and extracts the communalities and uniquenesses}
