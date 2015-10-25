@@ -114,7 +114,7 @@ repeat_cv <- function(form, data, method=method, n, responsevariable, ...) {
         testset <- data2[-trainind,]
         train.res <- caret::train(formula=form, data=trainset, ...)
 
-        train.pred <- caret::predict(train.res, testset)
+        train.pred <- predict(train.res, testset)
         res[[i]] <- caret::confusionMatrix(train.pred, testset[,responsevariable])
         Accuracy[i] <- res[[i]]$overall[1]
     }
