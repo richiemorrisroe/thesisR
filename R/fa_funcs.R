@@ -92,20 +92,19 @@ extract_h2u2 <- function (x) {
 ##' @author Richard Morrisroe
 fit_indices <- function (x, labels=NULL) {
     stopifnot(class(x) %in% c("psych", "fa"))
-  tli <- x$TLI
-  bic <- x$BIC
-  rmsea <- x$RMSEA
-  labels <-
-  rmsnames <- attr(x$RMSEA, "names")
-  res <- as.data.frame(cbind(tli, bic, rmsea[1], rmsea[2], rmsea[3]))
-  print(length(res))
-  colnames(res) <- c(
-      paste(substitute(x),"TLI", sep=""),
-      paste(substitute(x),"BIC", sep=""),
-      paste(substitute(x),"RMSEA", sep=""),
-      paste(substitute(x),"-90CInt", sep=""),
-      paste(substitute(x),"+90CInt", sep=""))
-  res
+    tli <- x$TLI
+    bic <- x$BIC
+    rmsea <- x$RMSEA
+    rmsnames <- attr(x$RMSEA, "names")
+    res <- as.data.frame(cbind(tli, bic, rmsea[1], rmsea[2], rmsea[3]))
+    print(length(res))
+    colnames(res) <- c(
+        paste(substitute(x),"TLI", sep=""),
+        paste(substitute(x),"BIC", sep=""),
+        paste(substitute(x),"RMSEA", sep=""),
+        paste(substitute(x),"-90CInt", sep=""),
+        paste(substitute(x),"+90CInt", sep=""))
+    res
 }
 ##' {Performs a SVD based CV metric used in chemometrics}
 ##' {Find reference for this - need to check external hard drive as no longer have academic access :( Appears to depend on some weird-ass package and takes an object of which I don't know the class, so this needs to be fixed}
