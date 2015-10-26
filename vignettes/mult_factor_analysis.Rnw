@@ -26,6 +26,8 @@ print(ggplot2::ggplot(comm.melt, ggplot2::aes(x=variable, y=value))+ggplot2::geo
 The boxplot is also interesting. Note the sharp jump at 2, and the small drop after 5. Not a solution I spent much time with, but it has some support in the literature. 
 
 <<crossval, echo=FALSE, fig=TRUE>>=
+data(healthoptmind)
+maas <- dat[with(dat, grep("MAASQ", names=dat) ),]
 maas_split <- split_sample(maas, 4)
 maas_comb <- create_combinations(maas_split)
 maas_mfa <- lapply(maas_comb, function (x) 
