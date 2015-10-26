@@ -99,7 +99,7 @@ split_sample <- function(x, split) {
 create_combinations <-  function(splits) {
     stopifnot(class(splits) == "list")
     splitnumbers <- length(splits)
-    facsplits <- factorial(splitnumbers)
+    facsplits <- choose(splitnumbers, k = (splitnumbers - 1))
     reslist <- list()
     for (i in 1:facsplits) {
         samples <- sample(
