@@ -60,7 +60,9 @@ randrecode6 <- recode_many(randset6,
                           vars=c("RANDQ32",
                           "RANDQ33",
                           "RANDQ35"),
-                          Recodings="1=0;2=25;3=50;4=75;5=100")
+                           Recodings="1=0;2=25;3=50;4=75;5=100")
+rand_scored <- cbind(randset1, randset2, randset3,
+                     randset4, randset5, randset6)
 test_that("recode_many returns a df of correct dimensions", {
           expect_is(randrecode1, "data.frame")
           expect_equal(dim(randrecode1), dim(randset1))

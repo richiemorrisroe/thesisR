@@ -106,7 +106,7 @@ create_combinations <-  function(splits) {
             size=1,
             replace=FALSE)
         train <- do.call("rbind", splits[-c(samples)])
-        test <- splits[c(samples)]
+        test <- as.data.frame(splits[c(samples)])
         reslist[[i]] <- list(train=train, test=test)
     }
     reslist
