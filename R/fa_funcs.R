@@ -169,7 +169,12 @@ factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ...) {
 
     for(i in 1:length(sols)) {
         coeff <- as.data.frame(factor_coeff(sols[[i]]))
-        coeff_ord <- coeff[,mynames]
+        if(!is.null(mynames)) {
+            coeff_ord <- coeff[,mynames]
+        }
+        else {
+            coeff_ord <- coeff
+        }
         sols_coeff_list[[i]] <- coeff_ord
     }
     sols_coeff_list
