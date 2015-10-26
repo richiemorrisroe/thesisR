@@ -10,7 +10,7 @@ big_splits <- 10
 split_maas <- split_sample(maas, split=test_splits)
 maas_combinations <- create_combinations(split_maas)
 split_maas10 <- split_sample(maas, split=big_splits)
-## test_that("create combinations returns the right dim train and test sets:",{
-##           expect_gt(lapply(split_maas["train"], dim),
-##                     lapply(split_maas, function (x) "[[", "test", dim))
-##       })
+test_that("create combinations returns the right dim train and test sets:",{
+          expect_gt(dim(maas_combinations[[1]]$train),
+                    dim(maas_combinations[[1]]$test))
+      })
