@@ -84,8 +84,7 @@ split_sample <- function(x, split) {
     samplist <- list()
     for(i in 1:max(split)) {
         samp <- x[splits == i,]
-        assign(paste("samp", i, sep=""), value=samp, 1)
-        samplist[[i]] <- get(paste("samp",i, sep=""))
+        samplist[[i]] <- samp
     }
     samplist
 }
