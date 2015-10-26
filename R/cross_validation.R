@@ -47,8 +47,8 @@ seperate_test_and_train <- function(data, test=TRUE) {
 ##' @param data a dataframe 
 ##' @param Form the formula to fit the model with
 ##' @param control control parameters for train
-##' @param sizes @inheritParams caret::train
-##' @param metric @inheritParams caret::train
+##' @param sizes something something
+##' @param metric otherthing otherthing
 ##' @param updown who knows?
 ##' @return model fits from the cv process
 ##' @author Richie Morrisroe
@@ -88,6 +88,29 @@ split_sample <- function(x, split) {
         samplist[[i]] <- get(paste("samp",i, sep=""))
     }
     samplist
+}
+##' {Something}
+##'
+##' {more things} 
+##' @title create_combinations
+##' @param splits a list containing splits from split_sample
+##' @return a list containing the splits into test and train
+##' @author Richard Morrisroe
+create_combinations <-  function(splits) {
+    stopifnot(class(splits) == "list")
+    splitnumbers <- length(splits)
+    facsplits <- factorial(splitnumbers)
+    reslist <- list()
+    for (i in 1:facsplits) {
+        samples <- sample(
+            1:splitnumbers,
+            size=1,
+            replace=FALSE)
+        train <- do.call("rbind", splits[-c(samples)])
+        test <- splits[c(samples)]
+        reslist[[i]] <- list(train=train, test=test)
+    }
+    reslist
 }
 ##' {A function for performing repeated Cross-validation}
 ##' {See description}
