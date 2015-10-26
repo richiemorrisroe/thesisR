@@ -45,7 +45,7 @@ rms <- extractor(parameter="rms")
 communalities <- extractor(parameter="communality")
 communality <- function(fs) {
     #deserves its own function
-     lapply(fs, `[`, "communality")
+     sapply(fs, `[`, "communality")
 
 }
 ##' {Extract loadings from a list of multiple factor solutions}
@@ -82,4 +82,16 @@ combine_loadings <-  function (mfa) {
   loadings
 
   lapply(loadings, function (x) Reduce("+", x))
+}
+fortify.mfa <- function(model, data, parameter, ...) {
+    stopifnot(class(model)=="mfa")
+    if(parameter != communality) {
+        stop("communality only part implemented")
+    }
+    comms <- communality(model)
+    comms.dc <- do.call("rbind", comms)
+    comms.df <- sapply(comms.dc, unlist)
+    comms.m <- reshape2::melt(comms.df, id.vars=rownames(mfa.df))
+    comms.m[,"Item"] <- with(mfa.m, gsub("communality", "",  x=Var1))
+    return(comms.m)
 }
