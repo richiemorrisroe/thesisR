@@ -25,4 +25,22 @@ print(ggplot2::ggplot(comm.melt, ggplot2::aes(x=variable, y=value))+ggplot2::geo
 
 The boxplot is also interesting. Note the sharp jump at 2, and the small drop after 5. Not a solution I spent much time with, but it has some support in the literature. 
 
+<<crossval, echo=FALSE, fig=TRUE>>=
+maas_split <- split_sample(maas, 4)
+maas_comb <- create_combinations(maas_split)
+maas_mfa <- lapply(maas_comb, function (x) 
+                   psych::fa(x[["train"]], nfactors=1, rotate="oblimin", method="ml"))
+mfa_comm <- communality(maas_mfa)
+names(mfa_comm) <- c("A", "B", "C", "D")
+mfa.df <- sapply(mfa_comm, unlist)
+mfa.m <- reshape2::melt(mfa.df, id.vars=rownames(mfa.df))
+mfa.m[,"Var1"] <- with(mfa.m, gsub("communality.MAAS", "",  x=Var1))
+ggplot(mfa.m, aes(x=Var1, y=value))+geom_boxplot()
+@ 
+
+The code above shows a typical analytics workflow with the package. Firstly, the sample
+is split (using split\_sample) and then we create train and test sets (using create\_combinations). 
+Next, we apply a factor model to all of the training data, and extract a useful parameter (in this case, communality) and can see how it varies over the different splits.
+
+
 \end{document}
