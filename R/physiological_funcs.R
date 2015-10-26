@@ -101,7 +101,7 @@ get_participant_number <- function(files) {
 ##' @param files a vector of files
 ##' @return a file identifier and the nrow() of each file 
 ##' @author Richie Morrisroe
-lazy_length <- function(files) {
+lazy_length2 <- function(files) {
     pp <- get_participant_number(files)
     lengthmat <- matrix(NA, 114, ncol=2)
     for (i in 1:length(files)) {
