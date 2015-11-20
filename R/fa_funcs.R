@@ -154,35 +154,8 @@ apa_demo_tables <- function(data, FUN=mean, xtable=FALSE, ...) {
     }
     return(data.tab)
 }
-##' {Return an averaged factor analysis solution over a number of cross-validated splits}
-##' {Takes two fa objects, and aggregates them into one set of coefficients. Can be useful either for combining CV selected splits of the correct size, and for bootstrapped FA results}
-##' @title factor_average
-##' @param sols a list of factor solutions to average over
-##' @param mynames who the hell knows?
-##' @param FUN function to aggregate by
-##' @param ... other arguments passed to fun
-##' @return a matrix containing the averaged fa solutions
-##' @author Richie Morrisroe
-factor_average <- function (sols=list(), mynames=NULL, FUN=mean, ...) {
 
-    sols_coeff_list <- list()
 
-    for(i in 1:length(sols)) {
-        coeff <- as.data.frame(factor_coeff(sols[[i]]))
-        if(!is.null(mynames)) {
-            coeff_ord <- coeff[,mynames]
-        }
-        else {
-            coeff_ord <- coeff
-        }
-        sols_coeff_list[[i]] <- coeff_ord
-    }
-    sols_coeff_list
-    sols_list <- lapply(sols_coeff_list, as.matrix)
-
-    resmat <- apply(simplify2array(sols_list), c(1,2), FUN)
-    return(resmat)
-}
 ##' {Give meaningful names to an fa solution}
 ##' {As description}
 ##' @title factor_names
